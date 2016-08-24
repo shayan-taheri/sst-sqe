@@ -39,11 +39,6 @@ echo "                               Debug  $Suite "
    
    sed -i'.w' '/RetVal=$?/ r _tmp_in' $Suite
 
-#		Use the unwrapped sst executable, sstsim.x
-   sed -i'.z' /sut=/a' \
-   sut=$SST_INSTALL_BIN/../libexec/sstsim.x
-      ' $Suite
-
 #		Remove parenthesis if needed
 #
    sed '/sut.*sutArgs/s/(${sut}/${sut}/' $Suite > __half-way
@@ -55,7 +50,7 @@ echo "                               Debug  $Suite "
    rm __half-way
 
 #		Add Valgrind, with parameters to sst execution line
-   sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --log-file=$VGout ${sut} /' $Suite
+   sed -i'.z' '/sut.*sutArgs/s/${sut} /valgrind --track-origins=yes --trace-children=yes --log-file=$VGout ${sut} /' $Suite
 
 
 done

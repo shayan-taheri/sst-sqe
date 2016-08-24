@@ -349,7 +349,7 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
 
-    if [[ $1 == "sstmainline_config_valgrind" ]] ; then
+    if [[ $1 == "SKIPsstmainline_config_valgrind" ]] ; then
         
         echo "                   module list"
         ModuleEx list
