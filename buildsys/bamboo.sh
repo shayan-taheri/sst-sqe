@@ -379,7 +379,9 @@ echo " #####################################################"
         export SST_TEST_ROOT=`pwd`/test
         ####    Source the testDefinitions
         . test/include/testDefinitions.sh
-        
+    fi
+    
+    if [[ $1 == "sstmainline_config_valgrind" ]] ; then        
         echo ' '; echo "Inserting Valgrind commands" ; echo ' '
         ./test/utilities/insertValgrind
     fi
