@@ -9,6 +9,9 @@ for Suite in  testSuite_Ariel.sh testSuite_cacheTracer.sh testSuite_cassini_pref
 
 do
 echo "                               Debug  $Suite "
+   if [ $Suite == "testSuite_Ariel.sh" ] ; then
+       continue
+   fi
 #		Reset the Suite
    git checkout -- $Suite
 #		Verify that there is an outFile defined
