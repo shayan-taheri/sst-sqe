@@ -35,8 +35,8 @@ import unittest
 
 # Set the Path to the Included SST Testing Modules
 TEST_SUITE_ROOT = os.path.dirname(os.path.realpath(__file__))
-SST_MODULES_PATH = TEST_SUITE_ROOT + "/../include"
-sys.path.append(SST_MODULES_PATH)
+SST_TEST_MODULES_PATH = TEST_SUITE_ROOT + "/../include"
+sys.path.append(SST_TEST_MODULES_PATH)
 
 # Import SST Testing Modules
 import SST_TestCase 
@@ -48,7 +48,7 @@ import SST_TestSupport as Test
 ################################################################################
 # DEFINES
 
-L_SUITENAME="SST_simpleComponent_suite" # Name of this test suite; will be used to
+#L_SUITENAME="SST_simpleComponent_suite" # Name of this test suite; will be used to
                                         # identify this suite in XML file. This
                                         # should be a single string, no spaces
                                         # please.
@@ -58,12 +58,11 @@ L_SUITENAME="SST_simpleComponent_suite" # Name of this test suite; will be used 
                                         # you will need to supply this value in the same way
                                         # that bamboo.sh defines it if you wish to use it.
                                         
-L_TESTFILE=[]                           # Empty list, used to hold test file names
+#L_TESTFILE=[]                           # Empty list, used to hold test file names
 
 ################################################################################
 
 class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
-#class testSuite_simpleComponent(unittest.TestCase):
     """TEST Suite DOC
     
     Placeholder for a TestCase inside a result. As far as a TestResult
@@ -77,7 +76,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
     @classmethod
     def setUpClass(self):
         print "top setUpClass"
-        self.L_SUITENAME="SST_simpleComponent_suite" # Name of this test suite; will be used to
+        #self.L_SUITENAME="SST_simpleComponent_suite" # Name of this test suite; will be used to
                                                      # identify this suite in XML file. This
                                                      # should be a single string, no spaces
                                                      # please.
@@ -87,7 +86,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
                                                      # you will need to supply this value in the same way
                                                      # that bamboo.sh defines it if you wish to use it.
                                                 
-        self.L_TESTFILE=[]                           # Empty list, used to hold test file names
+        #self.L_TESTFILE=[]                           # Empty list, used to hold test file names
         
         # Get all the Important Environment Variables
         self.SST_ROOT               = os.environ["SST_ROOT"]
@@ -143,7 +142,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
         # Force an outside assert
         print "RUNNING FIRST TEST"
         x = 5 / 0
-        self.assertEquals(5, 5, "VVV FAILED")
+        self.assertEquals(5, 5, "aaaothertest FAILED")
         
 ####
         
@@ -159,7 +158,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
         outFile = "{0}/{1}.out".format(self.SST_TEST_OUTPUTS, testDataFileBase)
         referenceFile = "{0}/{1}.out".format(self.SST_TEST_REFERENCE, testDataFileBase)
         # Add basename to list for XML processing later
-        self.L_TESTFILE.append(testDataFileBase)
+        #self.L_TESTFILE.append(testDataFileBase)
         
         # Define Software Under Test (SUT) and its runtime arguments
         sut = "{0}/sst".format(self.SST_TEST_INSTALL_BIN)

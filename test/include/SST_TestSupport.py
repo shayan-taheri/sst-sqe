@@ -3,8 +3,12 @@
 
 # Import Python System Level Modules
 import os
+import sys
 import subprocess
-import xml.etree.cElementTree as ET
+import re
+
+# Element Tree Method
+import xml.etree.ElementTree as ET
 import xml.dom.minidom as minidom
 
 
@@ -77,6 +81,32 @@ def compare_sorted(file1, file2):
 
 ################################################################################
 
+################################################################################
+# Support Code to allow CDATA to be used with the xml.etree.cElementTree module
+################################################################################
+
+# Add CDATA FUNCTION
+def CDATA(text=None):
+    element = ET.Element('![CDATA[')
+    element.text = text
+    return element
+
+# Point to the original _serialize_xml code in xml.etree.cElementTree
+ET._original_serialize_xml = ET._serialize_xml
+
+# Create a new _serialize_xml that can process CDATA
+def _serialize_xml(write, elem, encoding, qnames, namespaces):
+    print "_serialize_xml tag = {0}; tail = {1}".format(elem.tag, elem.tail)
+    if elem.tag == '![CDATA[':
+#        write("<%s%s]]>%s" % (elem.tag, elem.text, elem.tail))
+        write("<%s%s]]>\n" % (elem.tag, elem.text))
+        return
+    return ET._original_serialize_xml(
+         write, elem, encoding, qnames, namespaces)
+ET._serialize_xml = ET._serialize['xml'] = _serialize_xml
+
+################################################################################
+
 def generate_jenkins_xml_results(testResults, outputDir = None):
     
     # Figure out where to suff the output
@@ -104,7 +134,7 @@ def generate_jenkins_xml_results(testResults, outputDir = None):
     # Top level "testsuites" element
     testsuites = ET.Element("testsuites", name="NonJenkinsRun")
 
-    # Second level "testsuite" element
+    # Second level "testsuite" element under "testsuites" element
     testsuite = ET.SubElement(testsuites, "testsuite", name=testResults.testSuiteName, 
                               tests=str(testResults.testsRun), 
                               failures=str(len(testResults.failures)), 
@@ -114,6 +144,7 @@ def generate_jenkins_xml_results(testResults, outputDir = None):
                               time=str(int(testResults.allTestsTimeTaken.total_seconds())),
                               timestamp=testResults.allTestsStartDateTime.strftime('%Y-%m-%dT%H:%M:%S'))
 
+    # Third level "testcase" element under "testsuite" element
     # Now create an "testcase" entry for each test that was processed 
     for processedtest, runtime in testResults.allTestsProcessed:
         #print "\n\nDebug - Processed Test = {0}; RunTime = {1}".format(processedtest, runtime)
@@ -202,13 +233,36 @@ def generate_jenkins_xml_results(testResults, outputDir = None):
             fail_elem = ET.SubElement(testcase, "failure", type=errtype, message=errmsg)
 
 
+    # Third level "properties" element under "testsuite" - This element is not populated
+    properties = ET.SubElement(testsuite, "properties")
+
+    # Third level "system-out" & "system-err" elements under "testsuite"
+    cdata = "TESTSUITE {0}.py: Total Suite Wall Clock Time {1} seconds".format(testResults.testSuiteName, str(int(testResults.allTestsTimeTaken.total_seconds())))
+    system_out = ET.SubElement(testsuite, "system-out")
+    system_out.text = cdata    
+    
+    system_err = ET.SubElement(testsuite, "system-err")
+  
+#    # USING CDATA (NOT SURE IF JENKINS WILL PROCESS REGULAR TEXT)     
+#    cdata = CDATA("TESTSUITE {0}.py: Total Suite Wall Clock Time {1} seconds".format(testResults.testSuiteName, str(int(testResults.allTestsTimeTaken.total_seconds()))))
+#    system_out = ET.SubElement(testsuite, "system-out")
+#    system_out.append(cdata)    
+#    
+#    cdata = CDATA(" ")
+#    system_err = ET.SubElement(testsuite, "system-err")
+#    system_err.append(cdata)    
+
     # Fix the xml formatting with indentions (make pretty the xml file)
     testsuites = minidom.parseString(ET.tostring(testsuites)).toprettyxml(indent="    ", encoding='utf-8')
     
     # Print out the xml as part of the results
-    print "TestSuite Results:\n{0}".format(testsuites)
+    print "POST PARSING - TestSuite Results:\n{0}".format(testsuites)
     
     # Write the output
     with open("xmlreport.xml", "w") as f:
         f.write(testsuites)
+
+
+
+
 
