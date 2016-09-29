@@ -207,7 +207,7 @@ class SST_TestRunner(object):
         else:
             expectedFails, unexpectedSuccesses, skipped = results
 
-        self.stream.writeln("TESTSUITE %s: Ran %d test%s, Passed %d; Skipped %d and found %d Failures in %.3fs" % (result.testSuiteName, run, run != 1 and "s" or "", len(result.successes), len(result.successes), len(result.skipped) + len(result.errors), timeTaken))
+        self.stream.writeln("TESTSUITE %s: Processed %d test%s, Passed %d; Skipped %d and found %d Failures in %.3fs" % (result.testSuiteName, run, run != 1 and "s" or "", len(result.successes), len(result.skipped), len(result.failures) + len(result.errors), timeTaken))
         self.stream.writeln(result.separator2)
 
 #        infos = []
