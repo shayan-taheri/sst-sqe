@@ -102,9 +102,9 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
         """
         print "RUNNING test_simpleComponent - SHOULD PASS"
         
-        # Define a common basename for test output and reference
-        # files. XML postprocessing requires this.
-        testDataFileBase = "test_simpleComponent"
+        # Define a common basename for test output and reference files
+        # XML postprocessing requires this.
+        testDataFileBase = "{0}".format("test_simpleComponent")
         outFile = "{0}/{1}.out".format(Env.SST_TEST_OUTPUTS, testDataFileBase)
         referenceFile = "{0}/{1}.out".format(Env.SST_TEST_REFERENCE, testDataFileBase)
         
@@ -118,7 +118,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
             RetVal = Test.run_shell_cmd_redirected("{0} {1}".format(sut, sutArgs), outFile)
 
 #           TODO: HANDLE Timeout Situation
-            TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild}
+#            TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild}
 #            if [ -e $TIME_FLAG ] ; then 
 #                 echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
 #                 fail " Time Limit detected at `cat $TIME_FLAG` seconds" 

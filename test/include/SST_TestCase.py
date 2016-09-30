@@ -137,7 +137,10 @@ def SST_RunTestSuite(testclass, testlist = None, verbosity = 0):
     results = testrunner.getFinalResults()
     
     # Store the testresults into a Jenkins formatted XML file
-    generate_jenkins_xml_results(results)
+    if results != None:
+        generate_jenkins_xml_results(results)
+    else:
+        print "ERROR: Cannot Generate Jenkins XML Results as results = None"
 
 ####
 

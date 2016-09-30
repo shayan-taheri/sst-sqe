@@ -10,14 +10,26 @@ import subprocess
 ################################################################################
 # SUPPORT CODE
 
-def file_exists(fpath):
+def does_file_exist(fpath):
+    """ Returns true if file exists """
     return os.path.isfile(fpath)
 
 ####
 
 def is_exe(fpath):
-    return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+    """ Returns true if file exists and is a executable """
+    return does_file_exist(fpath) and os.access(fpath, os.X_OK)
 
+####
+
+def list_file_directory(fpath):
+    """ List the directory contents of a filepath.  File does not have to exist """   
+    dir = os.path.dirname(fpath)
+    dirlist = os.listdir(dir)
+    print "Files in Directory: {0}".format(dir)
+    for entry in dirlist:
+        print entry
+    
 ####
 
 def run_quick_shell_cmd(cmdline):
@@ -54,13 +66,21 @@ def run_shell_cmd_redirected(cmdline, stdoutfile, stderrfile=None):
 ####
 
 def check_timout_flag():
+    pass
+    #TODO: Look at timeLimitEnforcer code in shunit2 to see how this whole mess works
+    
     # Check for Timeout Situation
-    TIME_FLAG="/tmp/TimeFlag_$$_${__timerChild}" 
+#    TIME_FLAG="/tmp/TimeFlag_$$_${__timerChild}" 
+#    if os.path.exists(TIME_FLAG) == True:
     
-    if os.path.exists(TIME_FLAG) == True
-    
-    
-    
+#           TODO: HANDLE Timeout Situation
+#            TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+#            if [ -e $TIME_FLAG ] ; then 
+#                 echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+#                 fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+#                 rm $TIME_FLAG 
+#                 return 
+#            fi 
     
 
 ####
