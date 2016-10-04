@@ -1,1 +1,16 @@
 partest.bin*
+*.out
+*.phase
+*.sim
+*.xml
+*.marks
+*.sdl
+*.newout
+*.newref
+*.csv
+*.alloc
+*.time
+*.err
+*.3sed
+*.4sed
+*.pyc
