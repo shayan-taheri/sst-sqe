@@ -23,6 +23,24 @@ def run_quick_shell_cmd(cmdline):
     shelloutput = subprocess.Popen(cmd_param_list, stdout=subprocess.PIPE).communicate()[0]    
     return shelloutput
 
+def is_env_var_set(envVar):
+    try:
+        envVar = os.environ["envVar"]
+        return True
+    except KeyError:
+        return False
+
+def get_env_var_value(envVar):
+    try:
+        envVar = os.environ["envVar"]
+        return envVar
+    except KeyError:
+        return None
+
+def set_env_var_value(envVar, newVal):
+    os.environ["envVar"] = newVal
+
+
 ###############################################################################
 ###############################################################################
 ###############################################################################

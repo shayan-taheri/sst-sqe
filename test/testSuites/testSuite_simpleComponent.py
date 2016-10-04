@@ -126,16 +126,6 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
 #                 return 
 #            fi 
 
-##            # HANDLE Timeout Situation
-##            if Test.check_timout_flag() == True:
-##                self.fail("DDD FAILED")
-##                return
-###                 echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
-###                 fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
-###                 rm $TIME_FLAG 
-###                 return 
-###            fi 
-
             # Check the return code from SST 
             if RetVal != 0:
                 errormsg = " - WARNING: sst did not finish normally, RetVal = {0}".format(RetVal)
@@ -267,7 +257,7 @@ class testSuite_simpleComponent(SST_TestCase.SST_TestCase):
         self.fail("ZZZ FAILED")
 
 ################################################################################
-# Tun this module as a Test Suite
+# Run this module as a Test Suite
 if __name__ == '__main__':
     SST_TestCase.SST_RunTestSuite(testSuite_simpleComponent) 
     

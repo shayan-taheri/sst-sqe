@@ -120,25 +120,28 @@ class testSuite_merlin(SST_TestCase.SST_TestCase):
             Test.list_file_directory(sutArgs)
         self.assertTrue(Test.does_file_exist(sutArgs), "Error: Cannot find file {0}".format(sutArgs))
         
-
-# TODO: HANDL THE MULTI-RANK FLAGS
 #        echo " Running from `pwd`"
-#        if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-#           ${sut} ${sutArgs} > ${outFile}
-#           RetVal=$? 
-#        else
-#           mpirun -np ${SST_MULTI_RANK_COUNT} -output-filename $testOutFiles ${sut} ${sutArgs}
-#           RetVal=$? 
-#           cat ${testOutFiles}* > $outFile
-#        fi
-    
+
+        # Look to see if the SST_MULTI_RANK_COUNT Env variable is set
+        if Env.is_env_var_set("SST_MULTI_RANK_COUNT") == False:
+            runcmdline = "{0} {1}".format(sut, sutArgs)
+            RetVal = Test.run_shell_cmd_redirected(runcmdline, outFile)
+        else:
+            multirankcount = Env.get_env_var_value("SST_MULTI_RANK_COUNT")
+            runcmdline = "mpirun -np {0} -output-filename {1} {2} {3}".format(multirankcount, testOutFiles, sut, sutArgs)
+            RetVal = Test.run_shell_cmd_redirected(runcmdline, outFile)
+            runcmdline = "cat {0}*".format(testOutFiles)
+            Test.run_shell_cmd_redirected(, outFile)
+
+#        TODO: HANDLE Timeout Situation
 #        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
 #        if [ -e $TIME_FLAG ] ; then 
 #             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
 #             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
 #             rm $TIME_FLAG 
 #             return 
-#        fi 
+#        fi
+
 #        if [ $RetVal != 0 ]  
 #        then
 #             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
@@ -274,7 +277,7 @@ class testSuite_merlin(SST_TestCase.SST_TestCase):
 
 
 ################################################################################
-# Tun this module as a Test Suite
+# Run this module as a Test Suite
 if __name__ == '__main__':
     SST_TestCase.SST_RunTestSuite(testSuite_merlin) 
     
