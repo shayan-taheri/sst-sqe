@@ -86,6 +86,7 @@ do
       sed '/ .sst/s/ "sst/ "valgrind --track-origins=yes --log-file=$VGout $sut/' ${SST_TEST_INPUTS}/EmberSweepGenerator.py > $DEST/EmberSweepGenerator.py
       chmod +x $DEST/EmberSweepGenerator.py 
    fi  
+   rm $Suite.?
 
 
 done

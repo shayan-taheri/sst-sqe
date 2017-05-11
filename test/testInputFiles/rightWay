@@ -1,0 +1,28 @@
+#! /bin/bash
+echo my first line
+sst --version
+pwd 
+ls 
+cd /build/workspace/test
+sst test_simpleRNGComponent_marsaglia.py > testOutputs/firstTest.out
+grep Random testOutputs/firstTest.out | tail -5 > tout
+wc tout test_simpleRNGComponent_marsaglia.out
+diff tout test_simpleRNGComponent_marsaglia.out
+if [ $? == 0 ] ; then 
+    echo PASS
+else
+    echo no Match
+fi
+echo try an memHA test
+ls
+ls -l testIncoherent.py
+sst testIncoherent.py > tout
+diff tout test_memHA_Incoherent.out
+if [ $? == 0 ] ; then 
+    echo PASS
+else
+    echo no Match
+fi
+
+
+exit
