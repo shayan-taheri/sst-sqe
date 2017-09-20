@@ -76,7 +76,7 @@ wc SHU.in
 echo  SST_MULTI_RANK_COUNT   = ${SST_MULTI_RANK_COUNT}
 
 if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
- sed -i'.y' '/^${sut}/s/${sut}/mpirun -np ${SST_MULTI_RANK_COUNT} ${sut}/' SHU.in
+ sed -i'.y' '/^${sut}/s/${sut}/mpirun -np ${SST_MULTI_RANK_COUNT} -map-by numa:pe=2 ${sut}/' SHU.in
 fi    
 wc SHU.in
 

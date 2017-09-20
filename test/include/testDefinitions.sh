@@ -296,7 +296,7 @@ set_map-by_parameter() {
     if [ $ncores == 1 ] ; then
         NUMA_PARAM=" "
     elif [ $ncores -ge 2 ] && [ $ncores -le 4 ] ; then
-        NUMA_PARAM="-map-by numa:pe=2 -oversubscribe"
+        NUMA_PARAM="-map-by numa:pe=2"
     elif [ $ncores -ge 4 ] ; then
         NUMA_PARAM="-map-by numa:pe=2"
     fi
