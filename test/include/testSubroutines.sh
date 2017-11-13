@@ -256,6 +256,17 @@ cd $SST_ROOT
 (. ${SHUNIT2_SRC}/shunit2 $SSTTESTTEMPFILES/prefail.in)
 echo ' ' ; echo "Returned from shunit2" ; echo ' '
 rm $SSTTESTTEMPFILES/prefail.in
+# echo Debug $LINENO
+mustbe_1=`ps -f | grep sleep | grep -v grep | awk '{print $3}'`
+# echo mustbe_1 is $mustbe_1
+if [ "$mustbe_1" == "1" ] ; then
+# echo Debug $LINENO
+    tokill=`ps -f | grep sleep | grep -v grep | awk '{print $2}'`
+ps -p $tokill -f
+# echo tokill is $tokill
+    kill -9 $tokill
+# ps -f
+fi
 exit
 }
 
