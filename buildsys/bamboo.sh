@@ -388,15 +388,17 @@ echo " #####################################################"
 
     ##  Run a single Suite first,   value is Suite name without "test"
     if [[ ${SST_RUN_SUITE_FIRST:+isSet} == isSet ]] ; then
-        echo " SST_RUN_SUITE_FIRST is set:
+        echo " SST_RUN_SUITE_FIRST is set:"
         echo $SST_RUN_SUITE_FIRST
 
         PARM1__=`echo $SST_RUN_SUITE_FIRST | awk '{print $1}'`
-        ${SST_TEST_SUITES}/test${PARM1}
+echo DEBUG: PARM is $PARM1__
+        ${SST_TEST_SUITES}/test${PARM1__}.sh
 
         PARM2__=`echo $SST_RUN_SUITE_FIRST | awk '{print $2}'`
+echo DEBUG: PARM2 is $PARM2__
         echo $PARM2__ | grep -i last
-        if [ $? == 0 ] then
+        if [ $? == 0 ] ; then
            return
         fi
     fi
