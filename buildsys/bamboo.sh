@@ -385,6 +385,21 @@ echo " #####################################################"
     # Initialize directory to hold temporary test input files
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
+
+    ##  Run a single Suite first,   value is Suite name without "test"
+    if [[ ${SST_RUN_SUITE_FIRST:+isSet} == isSet ]] ; then
+        echo " SST_RUN_SUITE_FIRST is set:
+        echo $SST_RUN_SUITE_FIRST
+
+        PARM1__=`echo $SST_RUN_SUITE_FIRST | awk '{print $1}'`
+        ${SST_TEST_SUITES}/test${PARM1}
+
+        PARM2__=`echo $SST_RUN_SUITE_FIRST | awk '{print $2}'`
+        echo $PARM2__ | grep -i last
+        if [ $? == 0 ] then
+           return
+        fi
+    fi
    
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
