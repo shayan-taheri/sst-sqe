@@ -63,6 +63,8 @@ CP_case=$1
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
 
+    startSeconds=`date +%s`
+
     # Define Software Under Test (SUT) and its runtime arguments
     sut="${SST_TEST_INSTALL_BIN}/sst"
     sutArgs="${SST_ROOT}/sst-elements/src/sst/elements/cassini/tests/streamcpu-${CP_case}.py"
@@ -72,7 +74,7 @@ CP_case=$1
         # Run SUT
         ${sut} ${sutArgs}  > $outFile
         RetVal=$? 
-        TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild} 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
         if [ -e $TIME_FLAG ] ; then 
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -121,6 +123,10 @@ CP_case=$1
         echo ' '
         echo " Statistics information matches exactly"
      fi
+    endSeconds=`date +%s`
+    elapsedSeconds=$(($endSeconds -$startSeconds))
+    echo "Cassini_prefetch_${CP_case}: Wall Clock Time  $elapsedSeconds seconds"
+    echo " "
 
 }
 

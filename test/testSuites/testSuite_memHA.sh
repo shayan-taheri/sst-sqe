@@ -66,7 +66,11 @@ Match=$2    ##  Match criteron
         referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
     else
         #           This is multi-core case
-        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        else
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+        fi
     fi
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -79,20 +83,19 @@ Match=$2    ##  Match criteron
     ls $sutArgs
 
     echo " Running from `pwd`"
-    if [[ ${SST_MULTI_RANK_COUNT:+isSet} != isSet ]] ; then
-       ${sut} ${sutArgs} > ${outFile}
-       RetVal=$?
-    else
+    if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
        mpirun -np ${SST_MULTI_RANK_COUNT} $NUMA_PARAM -output-filename $testOutFiles ${sut} ${sutArgs}
        RetVal=$?
        cat ${testOutFiles}* > $outFile
        myWC $outFile
        remove_DRAMSim_noise $outFile
        myWC $outFile
-
+    else
+       ${sut} ${sutArgs} > ${outFile}
+       RetVal=$?
     fi
 
-    TIME_FLAG=/tmp/TimeFlag_$$_${__timerChild}
+    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild}
     if [ -e $TIME_FLAG ] ; then
          echo " Time Limit detected at `cat $TIME_FLAG` seconds"
          fail " Time Limit detected at `cat $TIME_FLAG` seconds"
@@ -307,6 +310,45 @@ test_memHA_ThroughputThrottling () {
     memHA_Template ThroughputThrottling  "M"
 }
 
+
+test_memHA_BackendGoblinHMC () {
+    memHA_Template BackendGoblinHMC "M"
+}
+
+
+test_memHA_CustomCmdGoblin_1 () {
+    memHA_Template CustomCmdGoblin_1 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_2 () {
+    memHA_Template CustomCmdGoblin_2 "M"
+}
+
+
+test_memHA_CustomCmdGoblin_3 () {
+    memHA_Template CustomCmdGoblin_3 "M"
+}
+
+
+test_memHA_BackendTimingDRAM_1 () {
+    memHA_Template BackendTimingDRAM_1 "M"
+}
+
+test_memHA_BackendTimingDRAM_2 () {
+    memHA_Template BackendTimingDRAM_2 "M"
+}
+
+test_memHA_BackendTimingDRAM_3 () {
+    memHA_Template BackendTimingDRAM_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_4 () {
+    memHA_Template BackendTimingDRAM_4 "M"
+}
+
+
+export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 

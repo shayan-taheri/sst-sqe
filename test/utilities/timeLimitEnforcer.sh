@@ -35,7 +35,7 @@ export TL_PPID=$PPID
 export TL_CALLER=$1
 
 ####                     The Time Limit flag
-TIME_FLAG=/tmp/TimeFlag_${1}_${TL_MY_PID}
+TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_${1}_${TL_MY_PID}
 echo $SST_TEST_ONE_TEST_TIMEOUT >> $TIME_FLAG
 chmod 777 $TIME_FLAG
 echo "         Create Time Limit Flag file, $TIME_FLAG"
@@ -49,10 +49,11 @@ touch ttt       # empty greps
 
 if [ "$SST_TEST_HOST_OS_KERNEL" != "Darwin" ] ; then    ######   LINUX #####
 
-. $SST_ROOT/test/include/TimeLimit-Linux.sh
+    . $SST_ROOT/test/include/TimeLimit-Linux.sh
 
 else    ###   This is the El Capitan  (pstree path)      ####    macOS 
 
-. $SST_ROOT/test/include/TimeLimit-MacOS.sh
+    . $SST_ROOT/test/include/TimeLimit-MacOS.sh
 
-    fi ####   End of El Capitan  pstree path
+fi ####   End of El Capitan  pstree path
+echo "        End of TL Enforcer   - - -  $CASE "
