@@ -66,7 +66,11 @@ Match=$2    ##  Match criteron
         referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
     else
         #           This is multi-core case
-        referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        if [ -e "$memH_test_dir/refFiles/${testDataFileBase}_MC.out" ] ; then
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}_MC.out"
+        else
+            referenceFile="$memH_test_dir/refFiles/${testDataFileBase}.out"
+        fi
     fi
     # Add basename to list for XML processing later
     L_TESTFILE+=(${testDataFileBase})
@@ -115,6 +119,17 @@ Match=$2    ##  Match criteron
 
     RemoveComponentWarning
 
+#    The following could/should be in test Subroutines
+    grep 'btl_tcp_endpoint' $outFile > /dev/null
+    if [ $? == 0 ] ; then
+        echo ' '; echo "$memHA_case: Removing mca_btl_tcp -- fail messages" ; echo ' '
+        sed -i.x '/btl_tcp_endpoint/d' $outFile
+        rm -f ${outFile}.x
+        myWC $outFile
+    else
+        echo " No mca btl tcp endpoint messages encountered"
+    fi
+
     pushd ${SSTTESTTEMPFILES}
 
     diff -b $referenceFile $outFile > ${SSTTESTTEMPFILES}/_raw_diff
@@ -143,43 +158,43 @@ Match=$2    ##  Match criteron
        ## Aug 22, 2017   Match is never available
                      echo "PASS: word/line count match $memHA_case"
                  else
-##                  fail "output does not match Reference"
-##
-##                   echo "   ---- Here is the sorted diff ---"
-##                   cat ${SSTTESTTEMPFILES}/diff_sorted 
+                  fail "output does not match Reference"
+
+                   echo "   ---- Here is the sorted diff ---"
+                   cat ${SSTTESTTEMPFILES}/diff_sorted 
 
 ## ##   Follows complicated code to accept slight difference (original for Flush)
 #      It was very specific code to accomodate one extra clock tick occasionally
 #      encountered with multi core processing. 
 #            - - - - -
-                      echo "   === #### Trying the special exception for Flush processing  "
-                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
-                                                               awk '{print $1}'`
-                      NUM_IDLE=$wc_diff
-                      IND=2
- echo NUM_IDLE=$NUM_IDLE
-                      while [ $IND -lt $NUM_IDLE ]
-                      do
- echo in loop
-                          R=$IND
-                          O=$((IND + 2))
-     echo $R and $O
-                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
-                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
-                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
- echo CountO = $CountO
- echo CountR = $CountR
-                          CountDifference=$((CountR-CountO))
-                          echo "CountDifference is $CountDifference"
-                          IND=$((IND + 4))
-                          echo "Count difference is $CountDifference"
-                          if [ $CountDifference != 1 ] ; then
-                              fail "Special memHA Flush handling did NOT save it"
-                              wc ${SSTTESTTEMPFILES}/diff_sorted
-                              cat ${SSTTESTTEMPFILES}/diff_sorted
-                              break
-                          fi
-                      done
+##                      echo "   === #### Trying the special exception for Flush processing  "
+##                      wc_diff=`wc -l ${SSTTESTTEMPFILES}/diff_sorted |
+##                                                               awk '{print $1}'`
+##                      NUM_IDLE=$wc_diff
+##                      IND=2
+## echo NUM_IDLE=$NUM_IDLE
+##                      while [ $IND -lt $NUM_IDLE ]
+##                      do
+## echo in loop
+##                          R=$IND
+##                          O=$((IND + 2))
+##     echo $R and $O
+##                          tmpds=${SSTTESTTEMPFILES}/diff_sorted
+##                          CountO=`sed -n ${O},${O}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+##                          CountR=`sed -n ${R},${R}p $tmpds | sed 's/.*=//'|sed 's/;//'`
+## echo CountO = $CountO
+## echo CountR = $CountR
+##                          CountDifference=$((CountR-CountO))
+##                          echo "CountDifference is $CountDifference"
+##                          IND=$((IND + 4))
+##                          echo "Count difference is $CountDifference"
+##                          if [ $CountDifference != 1 ] ; then
+##                              fail "Special memHA Flush handling did NOT save it"
+##                              wc ${SSTTESTTEMPFILES}/diff_sorted
+##                              cat ${SSTTESTTEMPFILES}/diff_sorted
+##                              break
+##                          fi
+##                      done
                  fi
              fi
          fi
@@ -324,6 +339,23 @@ test_memHA_CustomCmdGoblin_2 () {
 
 test_memHA_CustomCmdGoblin_3 () {
     memHA_Template CustomCmdGoblin_3 "M"
+}
+
+
+test_memHA_BackendTimingDRAM_1 () {
+    memHA_Template BackendTimingDRAM_1 "M"
+}
+
+test_memHA_BackendTimingDRAM_2 () {
+    memHA_Template BackendTimingDRAM_2 "M"
+}
+
+test_memHA_BackendTimingDRAM_3 () {
+    memHA_Template BackendTimingDRAM_3 "M"
+}
+
+test_memHA_BackendTimingDRAM_4 () {
+    memHA_Template BackendTimingDRAM_4 "M"
 }
 
 

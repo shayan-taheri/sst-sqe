@@ -4,28 +4,27 @@ TEST_SUITE_ROOT="$( cd -P "$( dirname "$0" )" && pwd )"
 . $TEST_SUITE_ROOT/../include/testDefinitions.sh
 . $TEST_SUITE_ROOT/../include/testSubroutines.sh
 
-L_SUITENAME="SST__ES2_suite" # Name of this test suite; will be used to
+L_SUITENAME="SST__ESshmem_suite" # Name of this test suite; will be used to
                              # identify this suite in XML file. This
                              # should be a single string, no spaces
                              # please.
 
 L_TESTFILE=()  # Empty list, used to hold test file names
 
-mkdir -p $SST_TEST_ROOT/testSuites/ES2_folder
+mkdir -p $SST_TEST_ROOT/testSuites/ESshmem_folder
 
-cd $SST_TEST_ROOT/testSuites/ES2_folder
+cd $SST_TEST_ROOT/testSuites/ESshmem_folder
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/emberLoad.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/loadInfo.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 
-referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES-shmem_cumulative.out
-cksum $referenceFile
-ln -s $SST_TEST_ROOT/testInputFiles/ES-shmem_List-of-Tests ./List-of-Tests
+referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
+ln -s $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
 
 pwd ; ls -ltr  | tail -5
 
-ES2_after() {
+ESshmem_after() {
         TEST_INDEX=$2
         TL=`grep 'simulated time' outFile`
         RetVal=$?
@@ -42,9 +41,9 @@ ES2_after() {
     else
        echo $TL
 # echo The first parameter is $1
-       echo $1   $TL >> $SST_TEST_OUTPUTS/ES2_cumulative.out
-# ls -l $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out
-#       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ES2_cumulative.out`
+       echo $1   $TL >> $SST_TEST_OUTPUTS/ESshmem_cumulative.out
+# ls -l $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
+#       RL=`grep $1 $SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out`
        RL=`grep $1 $referenceFile`
        if [ $? != 0 ] ; then 
           echo " Can't locate this test in Reference file "
@@ -62,7 +61,7 @@ ES2_after() {
     fi
     endSeconds=`date +%s`
     elapsedSeconds=$(($endSeconds -$startSeconds))
-    echo "ES2_${TEST_INDEX}: Wall Clock Time  $elapsedSeconds seconds"
+    echo "ESshmem_${TEST_INDEX}: Wall Clock Time  $elapsedSeconds seconds"
     export startSeconds=$endSeconds
 }
 
@@ -72,7 +71,7 @@ ES2_after() {
         do_md5="md5sum"
     fi
 
-## ln -s $SST_TEST_ROOT/testInputFiles/ES2_List-of-Tests ./List-of-Tests
+## ln -s $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
 rm SHU.in
 ind=1
 while [ $ind -lt 127 ] 
@@ -86,14 +85,14 @@ do
    hash=`$do_md5 _tmp_${ind} | awk '{print $1}'`
 ##   hash=`md5sum _tmp_${ind} | awk '{print $1}'`
    indx=$(printf "%03d" $ind)
-   echo "test_ES2_${indx}_${hash} () {" >> SHU.in
-   echo "L_TESTFILE+=testES2_${indx}" >> SHU.in
-   echo "cd $SST_TEST_ROOT/testSuites/ES2_folder" >> SHU.in
+   echo "test_ESshmem_${indx}_${hash} () {" >> SHU.in
+   echo "L_TESTFILE+=testESshmem_${indx} ; testDataFileBase=testESshmem_${indx}" >> SHU.in
+   echo "cd $SST_TEST_ROOT/testSuites/ESshmem_folder" >> SHU.in
 ##   echo "echo \"sut == \$sut \" " >> SHU.in
    sed -i'.x' 's/$/ > outFile/' _tmp_${ind}
    sed -i'.z' 's/sst/${sut}/' _tmp_${ind}
    cat _tmp_${ind} >> SHU.in
-   echo ES2_after ${hash} ${indx} >> SHU.in
+   echo ESshmem_after ${hash} ${indx} >> SHU.in
    echo "}"  >> SHU.in
 
    ind=$(( ind + 1 ))
@@ -115,20 +114,20 @@ fi
 wc SHU.in
 
    #   This is the code to run just selected tests from the sweep
-   #        using the indices defined by SST_TEST_ES2_LIST
+   #        using the indices defined by SST_TEST_ESshmem_LIST
    #   An inclusive sub-list may be specified as "first-last"  (e.g. 7-10)
 
-     if [[ ${SST_TEST_ES2_LIST:+isSet} == isSet ]] ; then
-  echo " LIST is $SST_TEST_ES2_LIST"
+     if [[ ${SST_TEST_ESshmem_LIST:+isSet} == isSet ]] ; then
+  echo " LIST is $SST_TEST_ESshmem_LIST"
          mv SHU.in SH_orig.in
-         for IND in $SST_TEST_ES2_LIST
+         for IND in $SST_TEST_ESshmem_LIST
          do
   echo " IND is $IND "
              echo $IND | grep -e '-' > /dev/null   
              if [ $? != 0 ] ; then
 #                            Single
                 indx=$(printf "%03d" $IND)
-                grep -A 5 ES2_${indx}_ SH_orig.in >> SHU.in
+                grep -A 5 ESshmem_${indx}_ SH_orig.in >> SHU.in
              else
 #                            Inclusive
 #     echo IND = $IND
@@ -140,7 +139,7 @@ wc SHU.in
                 do
 #     echo In the INDR loop INDR = $INDR
                    indx=$(printf "%03d" $INDR)
-                   grep -A 5 ES2_${indx}_ SH_orig.in >> SHU.in
+                   grep -A 5 ESshmem_${indx}_ SH_orig.in >> SHU.in
                    INDR=$(($INDR+1))
                 done    
              fi
@@ -153,6 +152,4 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 export SST_TEST_ONE_TEST_TIMEOUT=200
 export startSeconds=`date +%s`
 
-(. ${SHUNIT2_SRC}/shunit2 $SST_TEST_ROOT/testSuites/ES2_folder/SHU.in)
-
-cksum $SST_TEST_OUTPUTS/ES2_cumulative.out
+(. ${SHUNIT2_SRC}/shunit2 $SST_TEST_ROOT/testSuites/ESshmem_folder/SHU.in)
