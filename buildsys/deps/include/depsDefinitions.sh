@@ -42,7 +42,7 @@ elif [[ ${SST_INSTALL_DEPS:+isSet} != isSet ]] && [[ ${SST_INSTALL_DEPS_USER:+is
 then
     # Worst case scenario: Neither value has been set, so assume a
     # default SST dependency installation of $BASE/local.
-    export SST_DEPS_INSTALL_DEPS=$SST_BASE/local
+    export SST_DEPS_INSTALL_DEPS=$SST_BASE/DEPS_BUILD/local
 
 fi
 
@@ -54,7 +54,7 @@ export SST_DEPS_BIN=${SST_DEPS_ROOT}/bin
 export SST_DEPS_INCLUDE=${SST_DEPS_ROOT}/include
 
 # Location of deps source files
-export SST_DEPS_SRC=$SST_BASE/sstDeps/src
+export SST_DEPS_SRC=$SST_BASE/DEPS_BUILD/sstDeps/src
  
 # Location where pristine SST dependency source files are. These can
 # be tar.gz files, zipfiles, or other archive formats. This can be

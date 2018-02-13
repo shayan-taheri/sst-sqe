@@ -11,20 +11,28 @@
 SCENARIO_NAME="SCENARIO_3"
 echo "DEBUG: INSIDE FILE $SCENARIO_NAME"
 
+# NOTE: Load Methods are generic strings, but the initial set are
+#       "deps_build" - Use the old legacy bamboo deps file to load the dependancy
+#       "modules" - Use the environmet-modules pre-built module to load the dependancy
+
 ## Identify Dependencies
-SCENARIO_NUM_DEPENCENCY=3
+SCENARIO_NUM_DEPENDENCY=3
 
-SCENARIO_DEPENCENCY_NAME[1]="openmpi"
-SCENARIO_DEPENCENCY_VER[1]="1.8"
+SCENARIO_DEPENDENCY_NAME[1]="openmpi"
+SCENARIO_DEPENDENCY_VER[1]="openmpi-1.8"
+SCENARIO_DEPENDENCY_LOADMETHOD[1]="modules"
                         
-SCENARIO_DEPENCENCY_NAME[2]="zoltan"
-SCENARIO_DEPENCENCY_VER[2]="3.83"
+SCENARIO_DEPENDENCY_NAME[2]="zoltan"
+SCENARIO_DEPENDENCY_VER[2]="3.83"
+SCENARIO_DEPENDENCY_LOADMETHOD[2]="modules"
 
-SCENARIO_DEPENCENCY_NAME[3]="goblinhmc"
-SCENARIO_DEPENCENCY_VER[3]="default"
+SCENARIO_DEPENDENCY_NAME[3]="goblinhmc"
+SCENARIO_DEPENDENCY_VER[3]="default"
+SCENARIO_DEPENDENCY_LOADMETHOD[3]="deps_build"
                         
-SCENARIO_DEPENCENCY_NAME[4]="pin"
-SCENARIO_DEPENCENCY_VER[4]="2.14-71313"
+SCENARIO_DEPENDENCY_NAME[4]="pin"
+SCENARIO_DEPENDENCY_VER[4]="2.14-71313"
+SCENARIO_DEPENDENCY_LOADMETHOD[4]="modules"
 
 
 ###################################################

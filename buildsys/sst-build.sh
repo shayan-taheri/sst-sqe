@@ -1,3 +1,4 @@
+#!/bin/bash
 #-------------------------------------------------------------------------
 # Main - Main execution of the script - Called by script init (at bottom)
 # $1 = <Name of this script>
@@ -66,17 +67,18 @@ Main() {
     echo "############################################################################"
     echo "Loading the Dependancy Files"
     echo ""
-    echo "The Number of Dependancys to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_DEPENCENCY"
+    echo "The Number of Dependancys to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_DEPENDENCY"
     echo ""
     count=1 
-    while [  $count -le $SCENARIO_NUM_DEPENCENCY ]; do
+    while [  $count -le $SCENARIO_NUM_DEPENDENCY ]; do
         echo ""
-        echo "Loading DEPENCENCY #$count -- ${SCENARIO_DEPENCENCY_NAME[$count]} Version ${SCENARIO_DEPENCENCY_VER[$count]}"
+        echo "Loading DEPENDENCY #$count -- ${SCENARIO_DEPENDENCY_NAME[$count]} Version ${SCENARIO_DEPENDENCY_VER[$count]}"
         echo ""
         DEPENDANCY_LOAD_FCN=""
-        LoadSupportFile ${SCENARIO_DEPENCENCY_NAME[$count]} "$SQE_ROOT/dependencies" "dep_" "dependancy"
+        LoadSupportFile ${SCENARIO_DEPENDENCY_NAME[$count]} "$SQE_ROOT/dependencies" "dep_" "dependancy"
         ## Get the name of the load function from the dependancy file
-        SCENARIO_DEPENCENCY_LOAD_FCN[$count]=$DEPENDANCY_LOAD_FCN
+        SCENARIO_DEPENDENCY_NAME[$count]=$DEPENDENCY_NAME
+        SCENARIO_DEPENDENCY_LOAD_FCN[$count]=$DEPENDANCY_LOAD_FCN
         let count=count+1 
     done    
     
@@ -96,6 +98,7 @@ Main() {
         SUT_LOAD_FCN=""
         LoadSupportFile ${SCENARIO_SUT_NAME[$count]} "$SQE_ROOT/suts" "sut_" "SUT"
         ## Get the name of the load function from the sut file
+        SCENARIO_SUT_NAME[$count]=$SUT_NAME
         SCENARIO_SUT_LOAD_FCN[$count]=$SUT_LOAD_FCN
         let count=count+1 
     done    
@@ -112,21 +115,23 @@ Main() {
     echo "############################################################################"
     echo "Performing the Build/Install function for the Dependancy Files"
     count=1 
-    while [  $count -le $SCENARIO_NUM_DEPENCENCY ]; do
-        if [[ ${SCENARIO_DEPENCENCY_LOAD_FCN[$count]} != "" ]]; then 
+    while [  $count -le $SCENARIO_NUM_DEPENDENCY ]; do
+        if [[ ${SCENARIO_DEPENDENCY_LOAD_FCN[$count]} != "" ]]; then 
             echo ""
-            echo "Building / Installing Dependancy #$count -- ${SCENARIO_DEPENCENCY_NAME[$count]} Version ${SCENARIO_DEPENCENCY_VER[$count]}"
+            echo "Building / Installing Dependancy #$count -- ${SCENARIO_DEPENDENCY_NAME[$count]}; Load Method ${SCENARIO_DEPENDENCY_LOADMETHOD[$count]}; Version ${SCENARIO_DEPENDENCY_VER[$count]}"
             echo ""
+            # Set the Dependency Name
+            DEPENDENCY_NAME=${SCENARIO_DEPENDENCY_NAME[$count]}
             ## Run the load function defined by the dependancy file
-            ${SCENARIO_DEPENCENCY_LOAD_FCN[$count]} ${SCENARIO_DEPENCENCY_VER[$count]}
+            ${SCENARIO_DEPENDENCY_LOAD_FCN[$count]} ${SCENARIO_DEPENDENCY_LOADMETHOD[$count]} ${SCENARIO_DEPENDENCY_VER[$count]}
             ret_code=$?
             if [ $ret_code -ne 0 ] ; then
-                echo "ERROR: Failed call to function ${SCENARIO_DEPENCENCY_LOAD_FCN[$count]}"
+                echo "ERROR: Failed call to function ${SCENARIO_DEPENDENCY_LOAD_FCN[$count]}"
                 exit 1
             fi    
         else 
             echo ""
-            echo "ERROR: Unable to call Load Function for ${SCENARIO_DEPENCENCY_NAME[$count]}; Is it defined correctly in the dependancy file?"
+            echo "ERROR: Unable to call Load Function for ${SCENARIO_DEPENDENCY_NAME[$count]}; Is it defined correctly in the dependancy file?"
             exit 1
         fi     
         let count=count+1 
@@ -152,8 +157,10 @@ ScriptExitHandler() {
     echo ""
     echo "SCRIPT FINISHED...."
     ## Exit back to the working dir
-    echo "RETURING TO WORKING DIRECTORY @ $WORKING_DIR" 
-    popd
+    if [[ ${#DIRSTACK[@]} -gt 1 ]]; then
+        echo "RETURING TO WORKING DIRECTORY @ $WORKING_DIR" 
+        popd
+    fi
     echo ""
 }
 
@@ -558,6 +565,7 @@ trap ScriptErrorHandler ERR
 # Check Parameters
 if [ $# -lt 1 ] || [ $# -gt 1 ]
 then
+    echo "ERROR:"
     echo "Usage : $0 <built/test scenario>"
     exit 0
 fi

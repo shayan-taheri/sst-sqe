@@ -6,9 +6,9 @@
 # machine
 ###################################################
 
-DEPANDANCY_NAME="Zoltan"
+DEPENDENCY_NAME="Zoltan"
 
-echo "DEBUG: INSIDE FILE $DEPANDANCY_NAME"
+echo "DEBUG: INSIDE FILE $DEPENDENCY_NAME"
 
 # Identify the Loading Subroutine for this dependancy
 # This is the name of a subroutine in this file with a 
