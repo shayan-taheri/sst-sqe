@@ -8,8 +8,8 @@
 
 echo "# Loading Deps File sstDep_goblin_hmcsim_stabledevel.sh"
 
-PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
-. ${PARENT_DIR}/include/depsDefinitions.sh
+#PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
+#. ${PARENT_DIR}/include/depsDefinitions.sh
 
 # Environment variable unique to Goblin_HMCSIM
 export SST_BUILD_GOBLIN_HMCSIM=1

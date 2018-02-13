@@ -22,7 +22,8 @@ then
     then
         export SST_BASE=$SST_DEPS_USER_DIR
     else
-        export SST_BASE=$HOME
+##        export SST_BASE=$HOME
+        export SST_BASE=$SQE_ROOT
     fi
 fi
  
