@@ -49,7 +49,7 @@ Main() {
 
     # Dump the Environment that we have at the moment
 ## TODO: TURN THIS BACK ON    
-###    DumpEnvironment "INITIAL"
+    ###DumpEnvironment "INITIAL"
     
     ############################################################################
     ## Load the Scenario 
@@ -100,6 +100,12 @@ Main() {
         let count=count+1 
     done    
 
+    # Purge deps staging area and deps install area
+    echo "############################################################################"
+    echo "Deleting the Dependancy Staging and Install Directories"
+    rm -Rf ${SST_DEPS_SRC_STAGING}/*
+    rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
+    
     ############################################################################
     # Execute each actual Build / Install function in the dependancy file
     echo ""
@@ -216,7 +222,7 @@ SetupEnvironment() {
     then
         export SST_BASE=$SST_DEPS_USER_DIR
     else
-        export SST_BASE=$HOME
+        export SST_BASE=$SQE_ROOT
     fi
     
     # Location of SST library dependencies (deprecated)
@@ -265,8 +271,19 @@ SetupEnvironment() {
     echo "LOADING THE SQE depsDefinitions.sh FILE"
     #ls buildsys/deps/include
     # Load dependency definitions
-    . buildsys/deps/include/depsDefinitions.sh
+    . deps/include/depsDefinitions.sh
     echo ""
+
+    # create staging and installation directories, if needed
+    if [ ! -d ${SST_DEPS_SRC_STAGING} ]
+    then
+        mkdir -p ${SST_DEPS_SRC_STAGING}
+    fi
+
+    if [ ! -d ${SST_DEPS_INSTALL_DEPS} ]
+    then
+        mkdir -p ${SST_DEPS_INSTALL_DEPS}
+    fi
 }
 
 #-------------------------------------------------------------------------
@@ -279,6 +296,13 @@ DumpEnvironment() {
     echo "============================== $1 ENVIRONMENT DUMP FINISHED ================="
     echo ""
 }
+
+
+
+
+
+
+
 
 function setupdefinitions {
     #=========================================================================

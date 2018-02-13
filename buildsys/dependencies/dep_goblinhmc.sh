@@ -23,7 +23,29 @@ DEPENDANCY_LOAD_FCN="Load_dep_goblinhmc"
 # $1 = Dependancy Version
 ###################################################
 Load_dep_goblinhmc() {
-    DEP_VERSION=$1
+    OPTARG=$1
     
-    echo "DEBUG: RUNNING Load_dep_goblinhmc() with version $DEP_VERSION"
+    echo "DEBUG: RUNNING Load_dep_goblinhmc() with version $OPTARG"
+
+    case "$OPTARG" in
+        default|stabledevel) # build latest Goblin_HMCSIM from repository ("stable development")
+            echo "# (default) stabledevel: build latest Goblin_HMCSIM from repository"
+            . ${SST_DEPS_BIN}/sstDep_goblin_hmcsim_stabledevel.sh
+            ;;
+        none) # do not build (explicit)
+            echo "# none: will not build Goblin_HMCSIM"
+            ;;
+        *) # unknown Goblin_HMCSIM argument
+            echo "# Unknown argument '$OPTARG', will not build Goblin_HMCSIM"
+            ;;
+    esac
+    
+    # Stage the Goblin HMC Sim
+    sstDepsStage_goblin_hmcsim
+
+#    # Patch the Goblin HMC Sim
+#    sstDepsPatch_goblin_hmcsim
+    
+    # Deploy the Goblin HMC Sim
+    sstDepsDeploy_goblin_hmcsim    
 }
