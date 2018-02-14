@@ -104,8 +104,9 @@ Main() {
     done    
 
     # Purge deps staging area and deps install area
+    echo ""
     echo "############################################################################"
-    echo "Deleting the Dependancy Staging and Install Directories"
+    echo "DELETING THE DEPENDANCY STAGING AND INSTALL DIRECTORIES"
     rm -Rf ${SST_DEPS_SRC_STAGING}/*
     rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
     
@@ -276,21 +277,29 @@ SetupEnvironment() {
 ##    export SST_BUILD_TYPE=""
 
     echo "LOADING THE SQE depsDefinitions.sh FILE"
-    #ls buildsys/deps/include
     # Load dependency definitions
     . deps/include/depsDefinitions.sh
     echo ""
 
+    echo "LOADING THE BUILT/TESTING UTILITY FUNCTIONS support_functions.sh FILE"
+    # Load dependency definitions
+    . ../utilities/support_functions.sh
+    echo ""
+    
     # create staging and installation directories, if needed
+    echo "CREATE THE STAGING AND INSTALL DIRECTORIES IF NEEDED"
     if [ ! -d ${SST_DEPS_SRC_STAGING} ]
     then
+        echo "CREATING THE STAGING DIR AT ${SST_DEPS_SRC_STAGING}"
         mkdir -p ${SST_DEPS_SRC_STAGING}
     fi
 
     if [ ! -d ${SST_DEPS_INSTALL_DEPS} ]
     then
+        echo "CREATING THE INSTALL DIR AT ${SST_DEPS_INSTALL_DEPS}"
         mkdir -p ${SST_DEPS_INSTALL_DEPS}
     fi
+    echo ""
 }
 
 #-------------------------------------------------------------------------
