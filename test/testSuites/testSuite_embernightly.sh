@@ -34,6 +34,13 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 #=====================================================
 #  A bit of code to clear out old openmpi files from /tmp
 
+    ls -ld /tmp/openmpi-sessions*/* |grep jpvandy > List_jpv
+    ls -ld /tmp/openmpi-sessions*/* |grep sstbuild > List_sstb
+    ls -ld /tmp/openmpi-sessions*/* |grep jwilso  > List_jwil
+    ls -ld /tmp/openmpi-sessions*/*               > List_all
+
+    wc List_*
+     
     ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
     wc __rmlist
     cat __rmlist | sed 50q
