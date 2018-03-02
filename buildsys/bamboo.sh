@@ -389,7 +389,10 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
    
-    # Do we run the Macro Tests    
+        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+        return
+
+    # Dn we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
        [ $1 ==  sst_Macro_make_dist ] ; then

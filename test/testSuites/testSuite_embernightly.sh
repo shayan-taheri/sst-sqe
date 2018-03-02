@@ -36,15 +36,24 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
     ls -ld /tmp/openmpi-sessions*/* |grep $USER > __rmlist
     wc __rmlist
-#    cat __rmlist | sed 10q
-
+    cat __rmlist | sed 50q
+echo "    ===   this is for U16.04"
     today=$(( 10#`date +%j` ))
     echo "today is $today"
 if [ $SST_TEST_HOST_OS_KERNEL != "Darwin" ] ; then
 #   --This is Linux code and MacOS can't handle this date syntax--
+cnt=10
+
     
     while read -u 3 r1 r2 r3 r4 r5 mo da r8 name
     do
+if [ $cnt -gt 0 ] ;then
+    echo  "$r1 $r2 $r3 $r4 $r5 $mo $da $r8 $name"
+    echo  " mo = $mo"
+    cnt=$(($cnt-1))
+fi
+
+
       c_day=$(( 10#`date +%j -d "$mo $da"` ))
       if [ "$mo" == "Dec" ] && [ $c_day -lt 360 ] ; then
          echo found Dec
