@@ -389,6 +389,18 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_INPUTS_TEMP}
     mkdir -p ${SST_TEST_INPUTS_TEMP}
    
+    pwd
+    indx=1
+    while [ $indx -lt 151 ]
+    do
+#    test/utilities/invokeSuite memHA 1 1 lushes_2 a${indx}
+    test/utilities/invokeSuite memHA 4 1 lushes_2 a${indx}
+    test/utilities/invokeSuite memHA 2 1 lushes_2 a${indx}
+    indx=$(($indx + 1 ))
+    done
+
+    return
+
     # Do we run the Macro Tests    
     if [ $1 == "sst-macro_withsstcore_mac" ]   || [ $1 == "sst-macro_nosstcore_mac" ] ||
        [ $1 == "sst-macro_withsstcore_linux" ] || [ $1 == "sst-macro_nosstcore_linux" ] ||
