@@ -6,8 +6,11 @@
 # A bash script containing functions to process SST's Zoltan
 # dependency.
 
-PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
-. ${PARENT_DIR}/include/depsDefinitions.sh
+echo "# Loading Deps File sstDep_zoltan_3.83.sh"
+
+# TURN THIS OFF FOR NEXT GEN BUILD/TEST SYSTEM
+#PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
+#. ${PARENT_DIR}/include/depsDefinitions.sh
 
 # Environment variable unique to Zoltan
 export SST_BUILD_ZOLTAN=1
@@ -35,6 +38,9 @@ sstDepsStage_zoltan ()
 {
     sstDepsAnnounce -h $FUNCNAME -m "Staging Zoltan 3.83"
 
+    echo "AARON DEBUG: SST_DEPS_SRC_PRISTINE = ${SST_DEPS_SRC_PRISTINE}"
+    
+    
     # Extract tarfile. Once unpacked, files should be available in
     # $SST_DEPS_SRC_STAGED_ZOLTAN
     tar xfz ${SST_DEPS_SRC_PRISTINE}/zoltan_distrib_v3.83.tar.gz -C ${SST_DEPS_SRC_STAGING} 2> errFile

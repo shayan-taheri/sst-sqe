@@ -28,21 +28,25 @@ Load_dep_goblinhmc() {
     OPTLOADMETHOD=$1
     OPTVER=$2
     
-    echo "DEBUG: RUNNING Load_dep_goblinhmc() with version $OPTVER"
+    echo "RUNNING Load_dep_goblinhmc() with version $OPTVER"
    
     # At this point, we have multiple ways we can load the dependancy
     # Modules, Download and Compile, Assume its on machine, etc. its 
     # Up to this function on how to be sophisticated in loading the dependancy.
 
     # NOTE: Load Methods are generic strings, but the initial set are
-    #       "deps_build" - Use the old legacy bamboo deps file to load the dependancy
-    #       "modules" - Use the environmet-modules pre-built module to load the dependancy
+    #       "deps_build"  - Use the old legacy bamboo deps file to load the dependancy
+    #       "modules"     - Use the environment-modules pre-built module to load the dependancy
+    #       "clean_build" - Download and build the dependancy
     case "$OPTLOADMETHOD" in
         "deps_build") # Build/Install using the legacy deps_build system
             ${DEPENDENCY_NAME}_Load_dep_via_deps_build $OPTVER
             ;;
         "modules") # Install using pre-built modules
             ${DEPENDENCY_NAME}_Load_dep_via_modules $OPTVER
+            ;;
+        "clean_build") # Install using pre-built modules
+            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
             ;;
         *) 
             echo "# Unknown Load Method argument '$OPTLOADMETHOD', will not build/Install $DEPENDENCY_NAME"
@@ -56,7 +60,7 @@ Load_dep_goblinhmc() {
 GoblinHMC_Load_dep_via_modules() {
     OPTVER=$1
     
-    echo "DEBUG: RUNNING GoblinHMC_Load_dep_via_modules() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_modules() with version $OPTVER"
     
     echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via modules"
 }
@@ -67,7 +71,7 @@ GoblinHMC_Load_dep_via_modules() {
 GoblinHMC_Load_dep_via_deps_build() {
     OPTVER=$1
     
-    echo "DEBUG: RUNNING GoblinHMC_Load_dep_via_deps_build() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_deps_build() with version $OPTVER"
 
     case "$OPTVER" in
         default|stabledevel) # build latest Goblin_HMCSIM from repository ("stable development")
@@ -82,12 +86,27 @@ GoblinHMC_Load_dep_via_deps_build() {
             ;;
     esac
     
-    # Stage the Goblin HMC Sim
+    # Stage the Build
     sstDepsStage_goblin_hmcsim
 
-#    # Patch the Goblin HMC Sim
+#    # Patch the Build (only for specific versions)
 #    sstDepsPatch_goblin_hmcsim
     
-    # Deploy the Goblin HMC Sim
+    # Deploy the Build
     sstDepsDeploy_goblin_hmcsim    
 }
+
+###################################################
+
+# Load via modules
+GoblinHMC_Load_dep_via_clean_build() {
+    OPTVER=$1
+    
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
+    
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
+}
+
+###################################################
+
+

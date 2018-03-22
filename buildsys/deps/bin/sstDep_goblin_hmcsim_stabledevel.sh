@@ -8,6 +8,7 @@
 
 echo "# Loading Deps File sstDep_goblin_hmcsim_stabledevel.sh"
 
+# TURN THIS OFF FOR NEXT GEN BUILD/TEST SYSTEM
 #PARENT_DIR="$( cd -P "$( dirname "$0" )"/.. && pwd )"
 #. ${PARENT_DIR}/include/depsDefinitions.sh
 

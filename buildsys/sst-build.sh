@@ -57,6 +57,7 @@ Main() {
     echo ""
     echo "############################################################################"
     echo "Loading the Scenario File"
+    echo "############################################################################"
     LoadSupportFile $SCENARIO_NAME "$SQE_ROOT/scenarios/" "scenario_" "scenario"
     echo ""
     echo ""
@@ -66,6 +67,7 @@ Main() {
     echo ""
     echo "############################################################################"
     echo "Loading the Dependancy Files"
+    echo "############################################################################"
     echo ""
     echo "The Number of Dependancys to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_DEPENDENCY"
     echo ""
@@ -87,6 +89,7 @@ Main() {
     echo ""
     echo "############################################################################"
     echo "Loading the SUT Files"
+    echo "############################################################################"
     echo ""
     echo "The Number of SUT's to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_SUTS"
     echo ""
@@ -107,7 +110,11 @@ Main() {
     echo ""
     echo "############################################################################"
     echo "DELETING THE DEPENDANCY STAGING AND INSTALL DIRECTORIES"
+    echo "############################################################################"
+    echo ""
+    echo "Removing Directory ${SST_DEPS_SRC_STAGING}"
     rm -Rf ${SST_DEPS_SRC_STAGING}/*
+    echo "Removing Directory ${SST_DEPS_INSTALL_DEPS}"
     rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
     
     ############################################################################
@@ -115,11 +122,15 @@ Main() {
     echo ""
     echo "############################################################################"
     echo "Performing the Build/Install function for the Dependancy Files"
+    echo "############################################################################"
+    echo ""
     count=1 
     while [  $count -le $SCENARIO_NUM_DEPENDENCY ]; do
         if [[ ${SCENARIO_DEPENDENCY_LOAD_FCN[$count]} != "" ]]; then 
             echo ""
+            echo "----------------------------------------------------------------------------"
             echo "Building / Installing Dependancy #$count -- ${SCENARIO_DEPENDENCY_NAME[$count]}; Load Method ${SCENARIO_DEPENDENCY_LOADMETHOD[$count]}; Version ${SCENARIO_DEPENDENCY_VER[$count]}"
+            echo "----------------------------------------------------------------------------"
             echo ""
             # Set the Dependency Name
             DEPENDENCY_NAME=${SCENARIO_DEPENDENCY_NAME[$count]}
