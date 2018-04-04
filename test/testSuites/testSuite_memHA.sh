@@ -109,8 +109,8 @@ Match=$2    ##  Match criteron
          ls -l ${sut}
          fail "WARNING: sst did not finish normally, RetVal=$RetVal"
          myWC $outFile
-         echo " 20 line tail of \$outFile"
-         tail -20 $outFile
+         echo "Full   \$outFile"
+         cat $outFile
          echo "    --------------------"
          popd
          return
