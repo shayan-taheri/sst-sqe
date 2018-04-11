@@ -61,6 +61,7 @@ Main() {
     LoadSupportFile $SCENARIO_NAME "$SQE_ROOT/scenarios/" "scenario_" "scenario"
     echo ""
     echo ""
+    echo "The Compilier for this Scenario = $SCENARIO_COMPILIER_NAME; Version = $SCENARIO_COMPILIER_VER"
 
     ############################################################################
     # Load the Dependancy files
@@ -69,7 +70,7 @@ Main() {
     echo "Loading the Dependancy Files"
     echo "############################################################################"
     echo ""
-    echo "The Number of Dependancys to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_DEPENDENCY"
+    echo "The Number of Dependancys to Load in Scenario $SCENARIO_NAME = $LoadSupportFile"
     echo ""
     count=1 
     while [  $count -le $SCENARIO_NUM_DEPENDENCY ]; do
@@ -84,27 +85,27 @@ Main() {
         let count=count+1 
     done    
     
-    ############################################################################
-    # Load the SUT files
-    echo ""
-    echo "############################################################################"
-    echo "Loading the SUT Files"
-    echo "############################################################################"
-    echo ""
-    echo "The Number of SUT's to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_SUTS"
-    echo ""
-    count=1 
-    while [  $count -le $SCENARIO_NUM_SUTS ]; do
-        echo ""
-        echo "Loading SUT #$count -- ${SCENARIO_SUT_NAME[$count]}"
-        echo ""
-        SUT_LOAD_FCN=""
-        LoadSupportFile ${SCENARIO_SUT_NAME[$count]} "$SQE_ROOT/suts" "sut_" "SUT"
-        ## Get the name of the load function from the sut file
-        SCENARIO_SUT_NAME[$count]=$SUT_NAME
-        SCENARIO_SUT_LOAD_FCN[$count]=$SUT_LOAD_FCN
-        let count=count+1 
-    done    
+#    ############################################################################
+#    # Load the SUT files
+#    echo ""
+#    echo "############################################################################"
+#    echo "Loading the SUT Files"
+#    echo "############################################################################"
+#    echo ""
+#    echo "The Number of SUT's to Load in Scenario $SCENARIO_NAME = $SCENARIO_NUM_SUTS"
+#    echo ""
+#    count=1 
+#    while [  $count -le $SCENARIO_NUM_SUTS ]; do
+#        echo ""
+#        echo "Loading SUT #$count -- ${SCENARIO_SUT_NAME[$count]}"
+#        echo ""
+#        SUT_LOAD_FCN=""
+#        LoadSupportFile ${SCENARIO_SUT_NAME[$count]} "$SQE_ROOT/suts" "sut_" "SUT"
+#        ## Get the name of the load function from the sut file
+#        SCENARIO_SUT_NAME[$count]=$SUT_NAME
+#        SCENARIO_SUT_LOAD_FCN[$count]=$SUT_LOAD_FCN
+#        let count=count+1 
+#    done    
 
     # Purge deps staging area and deps install area
     echo ""
@@ -116,6 +117,14 @@ Main() {
     rm -Rf ${SST_DEPS_SRC_STAGING}/*
     echo "Removing Directory ${SST_DEPS_INSTALL_DEPS}"
     rm -Rf ${SST_DEPS_INSTALL_DEPS}/*
+    
+    ############################################################################
+    # Load the Compiler
+    echo "############################################################################"
+    echo "Loading the Compiler for this Scenario"
+    echo "############################################################################"
+    echo "TODO : LOAD THE COMPILER"
+    
     
     ############################################################################
     # Execute each actual Build / Install function in the dependancy file

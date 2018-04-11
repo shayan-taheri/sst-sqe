@@ -4,17 +4,29 @@
 # This scenario is a testing scenario for testing the build 
 # We will put more info here...
 ###################################################
+SCENARIO_NAME="SCENARIO_3"
+echo "DEBUG: INSIDE FILE $SCENARIO_NAME"
+
+###################################################
+# Identify the Compilier to be used for this scenario
+###################################################
+if [ $SST_DEPS_OS_NAME == "Darwin" ]; then
+    SCENARIO_COMPILIER_NAME="system"
+    SCENARIO_COMPILIER_VER="system"
+else
+    SCENARIO_COMPILIER_NAME="system"
+    SCENARIO_COMPILIER_VER="system"
+fi
 
 ###################################################
 # Identify the dependancies needed for this scenario 
 ###################################################
-SCENARIO_NAME="SCENARIO_3"
-echo "DEBUG: INSIDE FILE $SCENARIO_NAME"
 
 # NOTE: Load Methods are generic strings, but the initial set are
+#       "clean_build" - Download and build the dependancy
 #       "deps_build"  - Use the old legacy bamboo deps file to load the dependancy
 #       "modules"     - Use the environment-modules pre-built module to load the dependancy
-#       "clean_build" - Download and build the dependancy
+#       "spack"       - Use the spack engine to downlod & build/load the module
 
 ## Identify Dependencies
 SCENARIO_NUM_DEPENDENCY=3
@@ -22,31 +34,32 @@ SCENARIO_NUM_DEPENDENCY=3
 # For sst-devel
 
 if [ $SST_DEPS_OS_NAME == "Darwin" ]; then
+    SCENARIO_DEPENDENCY_LOADMETHOD[1]="modules"
     SCENARIO_DEPENDENCY_NAME[1]="openmpi"
     SCENARIO_DEPENDENCY_VER[1]="openmpi-1.8.8_clang-802.0.42"
-    SCENARIO_DEPENDENCY_LOADMETHOD[1]="modules"
 else    
+    SCENARIO_DEPENDENCY_LOADMETHOD[1]="modules"
     SCENARIO_DEPENDENCY_NAME[1]="openmpi"
     SCENARIO_DEPENDENCY_VER[1]="openmpi-1.8"
-    SCENARIO_DEPENDENCY_LOADMETHOD[1]="modules"
 fi
                         
+SCENARIO_DEPENDENCY_LOADMETHOD[2]="deps_build"
 SCENARIO_DEPENDENCY_NAME[2]="zoltan"
 SCENARIO_DEPENDENCY_VER[2]="3.83"
-SCENARIO_DEPENDENCY_LOADMETHOD[2]="deps_build"
 
+SCENARIO_DEPENDENCY_LOADMETHOD[3]="deps_build"
 SCENARIO_DEPENDENCY_NAME[3]="goblinhmc"
 SCENARIO_DEPENDENCY_VER[3]="default"
-SCENARIO_DEPENDENCY_LOADMETHOD[3]="deps_build"
                         
+SCENARIO_DEPENDENCY_LOADMETHOD[4]="modules"
 SCENARIO_DEPENDENCY_NAME[4]="pin"
 SCENARIO_DEPENDENCY_VER[4]="2.14-71313"
-SCENARIO_DEPENDENCY_LOADMETHOD[4]="modules"
 
 
 ###################################################
 # Identify the SUT's needed for this scenario 
 ###################################################
+# These SUTS Will be build via spack
 ## Identify SUTS 
 SCENARIO_NUM_SUTS=2
 

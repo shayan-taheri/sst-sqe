@@ -36,15 +36,20 @@ Load_dep_zoltan() {
     #       "deps_build"  - Use the old legacy bamboo deps file to load the dependancy
     #       "modules"     - Use the environment-modules pre-built module to load the dependancy
     #       "clean_build" - Download and build the dependancy
+    #       "spack"       - Use the spack engine to downlod & build/load the module
+
     case "$OPTLOADMETHOD" in
+        "clean_build") # Download and build the dependancy
+            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+            ;;
         "deps_build") # Build/Install using the legacy deps_build system
             ${DEPENDENCY_NAME}_Load_dep_via_deps_build $OPTVER
             ;;
         "modules") # Install using pre-built modules
             ${DEPENDENCY_NAME}_Load_dep_via_modules $OPTVER
             ;;
-        "clean_build") # Install using pre-built modules
-            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+        "spack") # Use the spack engine to downlod & build/load the module
+            ${DEPENDENCY_NAME}_Load_dep_via_spack $OPTVER
             ;;
         *) 
             echo "# Unknown Load Method argument '$OPTLOADMETHOD', will not build/Install $DEPENDENCY_NAME"
@@ -54,13 +59,13 @@ Load_dep_zoltan() {
 
 ###################################################
 
-# Load via modules
-Zoltan_Load_dep_via_modules() {
+# Load via clean build
+Zoltan_Load_dep_via_clean_build() {
     OPTVER=$1
     
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_modules() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
     
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via modules"
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
 }
 
 ###################################################
@@ -72,17 +77,17 @@ Zoltan_Load_dep_via_deps_build() {
     echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_deps_build() with version $OPTVER"
 
     case "$OPTVER" in
-        default|3.8) # build default Zoltan
+        3.2) # build default Zoltan
+            echo "#  will build Zoltan 3.2"
+            . ${SST_DEPS_BIN}/sstDep_zoltan_3.2.sh
+            ;;
+        3.8) # build default Zoltan
             echo "# (default) 3.8: will build Zoltan 3.8"
             . ${SST_DEPS_BIN}/sstDep_zoltan_3.8.sh
             ;;
         3.83) # build Zoltan 3.83
             echo "#  will build Zoltan 3.83"
             . ${SST_DEPS_BIN}/sstDep_zoltan_3.83.sh
-            ;;
-        3.2) # build default Zoltan
-            echo "#  will build Zoltan 3.2"
-            . ${SST_DEPS_BIN}/sstDep_zoltan_3.2.sh
             ;;
         none) # do not build (explicit)
             echo "# none: will not build Zoltan"
@@ -105,13 +110,25 @@ Zoltan_Load_dep_via_deps_build() {
 ###################################################
 
 # Load via modules
-Zoltan_Load_dep_via_clean_build() {
+Zoltan_Load_dep_via_modules() {
     OPTVER=$1
     
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_modules() with version $OPTVER"
     
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via modules"
 }
 
 ###################################################
+
+# Load via spack
+Zoltan_Load_dep_via_spack() {
+    OPTVER=$1
+    
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_spack() with version $OPTVER"
+    
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via spack"
+}
+
+###################################################
+
 

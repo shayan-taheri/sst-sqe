@@ -35,18 +35,23 @@ Load_dep_goblinhmc() {
     # Up to this function on how to be sophisticated in loading the dependancy.
 
     # NOTE: Load Methods are generic strings, but the initial set are
+    #       "clean_build" - Download and build the dependancy
     #       "deps_build"  - Use the old legacy bamboo deps file to load the dependancy
     #       "modules"     - Use the environment-modules pre-built module to load the dependancy
-    #       "clean_build" - Download and build the dependancy
+    #       "spack"       - Use the spack engine to downlod & build/load the module
+    
     case "$OPTLOADMETHOD" in
+        "clean_build") # Download and build the dependancy
+            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+            ;;
         "deps_build") # Build/Install using the legacy deps_build system
             ${DEPENDENCY_NAME}_Load_dep_via_deps_build $OPTVER
             ;;
         "modules") # Install using pre-built modules
             ${DEPENDENCY_NAME}_Load_dep_via_modules $OPTVER
             ;;
-        "clean_build") # Install using pre-built modules
-            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+        "spack") # Install using pre-built modules
+            ${DEPENDENCY_NAME}_Load_dep_via_spack $OPTVER
             ;;
         *) 
             echo "# Unknown Load Method argument '$OPTLOADMETHOD', will not build/Install $DEPENDENCY_NAME"
@@ -56,13 +61,13 @@ Load_dep_goblinhmc() {
 
 ###################################################
 
-# Load via modules
-GoblinHMC_Load_dep_via_modules() {
+# Load via clean build
+GoblinHMC_Load_dep_via_clean_build() {
     OPTVER=$1
     
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_modules() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
     
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via modules"
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
 }
 
 ###################################################
@@ -99,14 +104,24 @@ GoblinHMC_Load_dep_via_deps_build() {
 ###################################################
 
 # Load via modules
-GoblinHMC_Load_dep_via_clean_build() {
+GoblinHMC_Load_dep_via_modules() {
     OPTVER=$1
     
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_modules() with version $OPTVER"
     
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via modules"
 }
 
 ###################################################
 
+# Load via spack
+GoblinHMC_Load_dep_via_spack() {
+    OPTVER=$1
+    
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_spack() with version $OPTVER"
+    
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via spack"
+}
+
+###################################################
 

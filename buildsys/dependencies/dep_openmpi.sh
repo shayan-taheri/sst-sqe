@@ -36,21 +36,48 @@ Load_dep_openmpi() {
     #       "deps_build"  - Use the old legacy bamboo deps file to load the dependancy
     #       "modules"     - Use the environment-modules pre-built module to load the dependancy
     #       "clean_build" - Download and build the dependancy
+    #       "spack"       - Use the spack engine to downlod & build/load the module
+    
     case "$OPTLOADMETHOD" in
+        "clean_build") # Download and build the dependancy
+            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+            ;;
         "deps_build") # Build/Install using the legacy deps_build system
             ${DEPENDENCY_NAME}_Load_dep_via_deps_build $OPTVER
             ;;
         "modules") # Install using pre-built modules
             ${DEPENDENCY_NAME}_Load_dep_via_modules $OPTVER
             ;;
-        "clean_build") # Install using pre-built modules
-            ${DEPENDENCY_NAME}_Load_dep_via_clean_build $OPTVER
+        "spack") # Use the spack engine to downlod & build/load the module
+            ${DEPENDENCY_NAME}_Load_dep_via_spack $OPTVER
             ;;
         *) 
             echo "# Unknown Load Method argument '$OPTLOADMETHOD', will not build/Install $DEPENDENCY_NAME"
             ;;
     esac
 }    
+
+###################################################
+
+# Load via clean build
+openmpi_Load_dep_via_clean_build() {
+    OPTVER=$1
+    
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
+    
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
+}
+
+###################################################
+
+# Load via deps_build
+openmpi_Load_dep_via_deps_build() {
+    OPTVER=$1
+    
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_deps_build() with version $OPTVER"
+
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via deps_build"
+}
 
 ###################################################
 
@@ -77,12 +104,17 @@ openmpi_Load_dep_via_modules() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/$OPTVER
            ;;
+        openmpi-2.1.3)
+           echo "OpenMPI (openmpi-2.1.3) selected"
+           ModuleEx unload mpi # unload any default to avoid conflict error
+           ModuleEx load mpi/$OPTVER
+           ;;
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default 
            ;;
        *)
-           echo "Default MPI option, loading mpi/${desiredMPI}"
+           echo "Default MPI option, loading mpi/${OPTVER}"
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/$OPTVER 2>catch.err
            if [ -s catch.err ] 
@@ -96,26 +128,16 @@ openmpi_Load_dep_via_modules() {
 
 ###################################################
 
-# Load via deps_build
-openmpi_Load_dep_via_deps_build() {
+# Load via spack
+openmpi_Load_dep_via_spack() {
     OPTVER=$1
     
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_deps_build() with version $OPTVER"
-
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via deps_build"
+    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_spack() with version $OPTVER"
+    
+    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via spack"
 }
 
 ###################################################
 
-# Load via modules
-openmpi_Load_dep_via_clean_build() {
-    OPTVER=$1
-    
-    echo "RUNNING ${DEPENDENCY_NAME}_Load_dep_via_clean_build() with version $OPTVER"
-    
-    echo "ERROR: Cannot Build/Install $DEPENDENCY_NAME via clean_build"
-}
-
-###################################################
 
 
