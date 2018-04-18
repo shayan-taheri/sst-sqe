@@ -379,7 +379,10 @@ echo " #####################################################"
 
     # Initialize directory to hold testOutputs
     rm -Rf ${SST_TEST_OUTPUTS}
-    mkdir -p ${SST_TEST_OUTPUTS}
+    mkdir -p ${SST_TEST_OUTPUT}
+
+
+    ${SST_TEST_SUITES}/testSuite_scheduler.sh
 
     # Initialize directory to hold Bamboo-compatible XML test results
     rm -Rf ${SST_TEST_RESULTS}

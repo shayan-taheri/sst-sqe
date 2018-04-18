@@ -421,6 +421,13 @@ test_scheduler_0005() {
     else
         echo "Return from Metis grep is $retVal"
     fi
+
+##########################################################
+    module avail metis
+    echo   "### module in use +++"
+    module list metis
+    echo ' '
+
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
     # This is the expected name and location of the reference file
     referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
@@ -496,6 +503,109 @@ test_scheduler_0005() {
     fi
 }
 
+test_scheduler_0005a() {
+
+
+      
+    # Define a common basename for test output and reference
+    # files, and ".out" extension. XML postprocessing requires this.
+    testDataFileBase="test_scheduler_0005"
+    # This test requires that sst be built with METIS
+    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/sst-*/config.log > /dev/null
+    retVal=$?
+    if [ $retVal != 0 ] ; then
+        echo "     SST NOT configured with METIS,  skipping $testDataFileBase"
+        skip_this_test     # Skip function in shunit2
+        echo ' '
+        return
+    else
+        echo "Return from Metis grep is $retVal"
+    fi
+
+##########################################################
+    module avail metis
+    echo   "### module in use +++"
+    module list metis
+    module rm metis
+    module load metis
+    module list metis
+
+    echo ' '
+
+    outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}a.out"
+    # This is the expected name and location of the reference file
+    referenceFile="${SST_REFERENCE_ELEMENTS}/scheduler/tests/refFiles/${testDataFileBase}.out"
+    ####################
+    #      Intel compiler requires unique Reference file
+    $CXX --version > check-comp 2>&1
+    if [ $? != 0 ] ; then
+        echo "  Not a special case, no compiler specification found"
+    else
+        grep Intel check-comp > /dev/null
+        if [ $? == 0 ] ; then
+            echo " Intel compiler special case"
+            referenceFile="${SST_TEST_REFERENCE}/${testDataFileBase}_Intel_comp.out"
+        fi
+    fi
+    rm -f check-comp
+    # Add basename to list for XML processing later
+    L_TESTFILE+=(${testDataFileBase})
+
+    configFile="${SST_TEST_SDL_FILES}/test_scheduler_0005.py"
+
+    # Define Software Under Test (SUT) and its runtime arguments
+    sut="${SST_TEST_INSTALL_BIN}/sst"
+    sutArgs="${configFile}"
+
+    cd ${SST_TEST_OUTPUTS}
+    #These are already linked in Test 4:
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3.mtx .
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/sphere3_coord.mtx .
+    #ln -s ${SST_ROOT}/sst-elements/src/sst/elements/scheduler/simulations/test_scheduler_Atlas.sim .
+
+    if [ -f ${sut} ] && [ -x ${sut} ]
+    then
+        # Run SUT and capture its output
+        (${sut} ${sutArgs} > /dev/null)
+        RetVal=$? 
+        TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
+        if [ -e $TIME_FLAG ] ; then 
+             echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
+             rm $TIME_FLAG 
+             return 
+        fi 
+        if [ $RetVal != 0 ]  
+        then
+             echo ' '; echo WARNING: sst did not finish normally ; echo ' '
+             ls -l ${sut}
+             fail "WARNING: sst did not finish normally, RetVal=$RetVal"
+             return
+        fi
+        echo "" > ${outFile}
+
+        tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.alloc >> ${outFile};
+        tail -n +2 ${SST_TEST_OUTPUTS}/test_scheduler_Atlas.sim.time >> ${outFile};
+
+
+        diff -b ${referenceFile} ${outFile} > /dev/null;
+        if [ $? -ne 0 ]
+        then
+             ref=`wc ${referenceFile} | awk '{print $1, $2}'`; 
+             new=`wc ${outFile}       | awk '{print $1, $2}'`;
+             if [ "$ref" == "$new" ];
+             then
+                 echo "outFile word/line count matches Reference"
+             else
+                 echo "Scheduler test-5  Fails"
+                 tail $outFile
+                 fail "outFile word/line count does NOT matches Reference"
+             fi
+         else
+             echo ReferenceFile is an exact match of outFile
+         fi
+    fi
+}
 
 export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
