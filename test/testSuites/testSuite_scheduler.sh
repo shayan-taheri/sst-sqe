@@ -423,9 +423,9 @@ test_scheduler_0005() {
     fi
 
 ##########################################################
-    module avail metis
+    module avail 
     echo   "### module in use +++"
-    module list metis
+    module list 
     echo ' '
 
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
@@ -523,9 +523,9 @@ test_scheduler_0005a() {
     fi
 
 ##########################################################
-    module avail metis
+    module avail 
     echo   "### module in use +++"
-    module list metis
+    module list 
     module rm metis
     module load metis
     module list metis
