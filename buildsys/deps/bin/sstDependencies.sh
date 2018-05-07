@@ -418,8 +418,10 @@ sstDepsPatchSource ()
         fi
     fi
 
-    if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+   # if [ ! -z "${SST_BUILD_DRAMSIM}" ]
+    if [ 0 ]
     then
+echo  "NO DRAMSIM PATCH"    
         #-----------------------------------------------------------------------
         # DRAMSim
         #-----------------------------------------------------------------------
