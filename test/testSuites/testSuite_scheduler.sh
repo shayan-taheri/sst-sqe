@@ -423,9 +423,9 @@ test_scheduler_0005() {
     fi
 
 ##########################################################
-    module avail
+    module avail 
     echo   "### module in use +++"
-    module list
+    module list 
     echo ' '
 
     outFile="${SST_TEST_OUTPUTS}/${testDataFileBase}.out"
