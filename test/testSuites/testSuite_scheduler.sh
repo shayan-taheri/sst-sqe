@@ -538,7 +538,7 @@ echo going to rm metis
     echo   "### List modules in use +++"
     module list metis
 echo load matis-bundled
-    module load metis-bundled
+    module load metis/metis-bundled
     echo   "### List modules in use +++"
     module list metis
 
@@ -627,3 +627,4 @@ export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 # "test"  will be automatically executed.
 (. ${SHUNIT2_SRC}/shunit2)
 
+exit
