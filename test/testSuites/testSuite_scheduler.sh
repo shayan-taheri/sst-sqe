@@ -538,7 +538,7 @@ echo going to rm metis
     echo   "### List modules in use +++"
     module list metis
 echo load matis-bundled
-    module load metis/metis-bundled
+    module load metis/metis-5.1.0-bundled
     echo   "### List modules in use +++"
     module list metis
 
