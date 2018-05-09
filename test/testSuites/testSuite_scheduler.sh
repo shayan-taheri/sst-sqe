@@ -419,12 +419,13 @@ test_scheduler_0005() {
         echo ' '
         return
     else
-        echo "Return from Metis grep is $retVal"
+        echo "config.log says we HAVE METIS $retval"
     fi
 
 ##########################################################
+    echo "List Available Modules"
     module avail 
-    echo   "### module in use +++"
+    echo   "### List modules in use +++"
     module list 
     echo ' '
 
@@ -435,7 +436,7 @@ test_scheduler_0005() {
     #      Intel compiler requires unique Reference file
     $CXX --version > check-comp 2>&1
     if [ $? != 0 ] ; then
-        echo "  Not a special case, no compiler specification found"
+        echo "  Not a special Intel case, no compiler specification found"
     else
         grep Intel check-comp > /dev/null
         if [ $? == 0 ] ; then
@@ -519,15 +520,26 @@ test_scheduler_0005a() {
         echo ' '
         return
     else
-        echo "Return from Metis grep is $retVal"
+        echo "config.log says we HAVE METIS $retval"
     fi
 
+
 ##########################################################
+    echo "List Available Modules"
     module avail 
     echo   "### module in use +++"
     module list 
+echo going to rm metis
     module rm metis
-    module load metis
+    grep "^#define.HAVE_METIS.1" ${SST_ROOT}/sst-*/config.log > /dev/null
+    if [ $? == 0 ] ; then
+        echo "config.log says we HAVE METIS $retval"
+    fi
+    echo   "### List modules in use +++"
+    module list metis
+echo load matis-bundled
+    module load metis-bundled
+    echo   "### List modules in use +++"
     module list metis
 
     echo ' '
