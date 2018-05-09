@@ -619,6 +619,7 @@ echo load matis-bundled
     fi
 }
 
+export SST_TEST_ONE_TEST_TIMEOUT=50
 export SHUNIT_DISABLE_DIFFTOXML=1
 export SHUNIT_OUTPUTDIR=$SST_TEST_RESULTS
 
