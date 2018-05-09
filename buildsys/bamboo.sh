@@ -383,6 +383,7 @@ echo " #####################################################"
 
 
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
+    return
 
     # Initialize directory to hold Bamboo-compatible XML test results
     rm -Rf ${SST_TEST_RESULTS}
