@@ -379,7 +379,7 @@ echo " #####################################################"
 
     # Initialize directory to hold testOutputs
     rm -Rf ${SST_TEST_OUTPUTS}
-    mkdir -p ${SST_TEST_OUTPUT}
+    mkdir -p ${SST_TEST_OUTPUTS}
 
 
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
