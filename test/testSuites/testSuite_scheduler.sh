@@ -536,11 +536,11 @@ echo going to rm metis
         echo "config.log says we HAVE METIS $retval"
     fi
     echo   "### List modules in use +++"
-    module list metis
+    module list 
 echo load matis-bundled
     module load metis/metis-5.1.0-bundled
     echo   "### List modules in use +++"
-    module list metis
+    module list 
 
     echo ' '
 
