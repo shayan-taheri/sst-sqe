@@ -381,10 +381,11 @@ echo " #####################################################"
     rm -Rf ${SST_TEST_OUTPUTS}
     mkdir -p ${SST_TEST_OUTPUTS}
     
-#   get some valid output
-        ${SST_TEST_SUITES}/testSuite_embernightly.sh
-
     ${SST_TEST_SUITES}/testSuite_scheduler.sh
+    
+    #   get some valid output
+        ${SST_TEST_SUITES}/testSuite_embernightly.sh
+    
     return
 
     # Initialize directory to hold Bamboo-compatible XML test results
