@@ -94,8 +94,9 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
     fi
     
     if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
-        ps -f -p $SST_PID
-        ps -p $SST_PID
+        ps -f -p $SST_PID --no-headers
+        date
+        ps -p $SST_PID --no-headers
 
         echo " Check for Dead Lock"
         kill -USR1 $SST_PID
@@ -107,8 +108,9 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
         echo " ###############################################################"
     fi
-        ps -f -p $SST_PID
-        ps -p $SST_PID
+        ps -f -p $SST_PID --no-headers
+        date
+        ps -p $SST_PID --no-headers
     
     if [ -z $KILL_PID ] ; then
         findChild $TL_PPID
@@ -162,15 +164,17 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         #          Invoke the traceback routine
         date
         echo "   Invoke the traceback routine  ---- $CASE"
-        ps -f -p $SST_PID
-        ps -p $SST_PID
+        ps -f -p $SST_PID --no-headers
+        date
+        ps -p $SST_PID --no-headers
+        
         
         echo "\$SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM" ; echo
         $SST_ROOT/test/utilities/stackback.py $TRACEBACK_PARAM
         
         echo ' '
-        ps -f -p $SST_PID
-        ps -p $SST_PID
+        ps -f -p $SST_PID --no-headers
+        ps -p $SST_PID --no-headers
         date
         echo "   Return to timeLimitEnforcer"
         echo ' '
