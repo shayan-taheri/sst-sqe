@@ -906,7 +906,7 @@ _shunit_cleanup()
 _kill_timeLimitEnforcer()
 {
     __grandChild=`(unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH; ps -ef -u $USER) | awk '{ if ( $3 == ENVIRON["__timerChild"] ) print $2 }'`
-#    echo Sleep child is $__grandChild   
+    echo Sleep child is $__grandChild   
     (unset LD_LIBRARY_PATH DYLD_LIBRARY_PATH;ps -p $__timerChild) > /dev/null && kill $__timerChild $__grandChild
 }
 
