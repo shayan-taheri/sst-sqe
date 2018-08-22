@@ -60,6 +60,8 @@ echo "------------------   Debug -------------"
     echo "  JOHNS sanity check   --  all bin/sst"
     ps -ef | grep 'bin/sst ' | grep -v grep 
     echo " ----------- all  "
+ps -ef | grep 'sst ' | grep -v grep 
+    echo "   end of extra for Ubuntu   ################################"
     ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun 
     ps -f | grep 'bin/sst ' | grep -v grep | grep -v mpirun | sed 1q | awk '{ print $2 }'
     echo "      finding SST_PID and MPIRUN_PID"
