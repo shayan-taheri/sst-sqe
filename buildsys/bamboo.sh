@@ -428,7 +428,8 @@ echo " #####################################################"
 
 ##    GEM5SST, QSIM and CHDL have been omitted from this list
 
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM:$SST_DEPS_INSTALL_GOBLIN_HMCSIM
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_DRAMSIM:$SST_DEPS_INSTALL_HYBRIDSIM:$SST_DEPS_INSTALL_NVDIMMSIM
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SST_DEPS_INSTALL_GOBLIN_HMCSIM:$SST_DEPS_INSTALL_RAMULATOR:$SST_DEPS_INSTALL_HBM_DRAMSIM2
 
         if [ `uname` == "Darwin" ] 
         then
@@ -597,19 +598,21 @@ echo " #####################################################"
             GROUP=${SST_SWEEP_SPLIT}
         fi
         if [ $GROUP != 2 ] ; then
-            ${SST_TEST_SUITES}/testSuite_openMP.sh
-            ${SST_TEST_SUITES}/testSuite_diropenMP.sh
-            ${SST_TEST_SUITES}/testSuite_dirSweepB.sh
-            ${SST_TEST_SUITES}/testSuite_dirSweep.sh
+#                                                               GROUP ONE
+            ${SST_TEST_SUITES}/testSuite_openMP.sh              #     9        
+            ${SST_TEST_SUITES}/testSuite_diropenMP.sh           #     9
+            ${SST_TEST_SUITES}/testSuite_dirSweepB.sh           #    16 
+            ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh        #  1024
+            ${SST_TEST_SUITES}/testSuite_dirSweep.sh            #  1152
         fi
         if [ $GROUP == 1 ] ; then 
             return
         fi
-        ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh
-        ${SST_TEST_SUITES}/testSuite_Sweep_openMP.sh
-        ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh
+#                                                               GROUP TWO
+        ${SST_TEST_SUITES}/testSuite_dirnoncacheable_openMP.sh  #     8
+        ${SST_TEST_SUITES}/testSuite_noncacheable_openMP.sh     #     8
+        ${SST_TEST_SUITES}/testSuite_dirSweepI.sh               #   384 
+        ${SST_TEST_SUITES}/testSuite_dir3LevelSweep.sh          #  1152
         return
     fi
 
@@ -1458,7 +1461,16 @@ linuxSetBoostMPI() {
 #       ModuleEx load systemc/systemc-2.3.0
        # METIS 5.1.0
        echo "bamboo.sh: Load METIS 5.1.0"
-       ModuleEx load metis/metis-5.1.0
+       ModuleEx avail | grep bundled
+       if [ $? == 0 ] ; then
+           echo " Bingo ###################################################"
+           ModuleEx load metis/metis-5.1.0-bundled
+       else
+           ModuleEx load metis/metis-5.1.0
+       fi
+       echo "      This is what is loaded for METIS"
+       ModuleEx list | grep metis
+        
        # Other misc
 #       echo "bamboo.sh: Load libphx"
 #       ModuleEx load libphx/libphx-2014-MAY-08
