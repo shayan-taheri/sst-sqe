@@ -93,12 +93,23 @@ echo " ################################ temporary    SSTPAR= $SSTPAR_PID. TL_PPI
         KILL_PID=$MPIRUN_PID
     fi
     
-    if [[ ${SST_MULTI_CORE:+isSet} == isSet ]] && [[ ${SST_PID:+isSet} == isSet ]] ; then
+    if [[ ${SST_PID:+isSet} == isSet ]] ; then
         echo " Check for Dead Lock"
         kill -USR1 $SST_PID
         sleep 1
         kill -USR1 $SST_PID
         
+        touch $SST_ROOT/test/testOutputs/${CASE}dummy
+        grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
+        grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
+        echo " ###############################################################"
+        
+        echo sleep 5
+        sleep 5
+        ps -f  -p $SST_PID h
+echo $?  was return from ps ; echo ' '
+        kill -USR1 $SST_PID
+
         touch $SST_ROOT/test/testOutputs/${CASE}dummy
         grep -i signal $SST_ROOT/test/testOutputs/${CASE}*
         grep -i CurrentSimCycle $SST_ROOT/test/testOutputs/${CASE}*
