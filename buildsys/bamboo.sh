@@ -394,7 +394,7 @@ echo " #####################################################"
     while [ $indx -lt 151 ]
     do
 #    test/utilities/invokeSuite memHA 1 1 lushes_2 a${indx}
-     test/utilities/invokeSuite ESshmem     1 4 ESshmem=14-22  a${indx}
+     test/utilities/invokeSuite EmberSweep     1 1 ES=1,2  a${indx}
     indx=$(($indx + 1 ))
     done
 
