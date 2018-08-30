@@ -95,6 +95,7 @@ RUNNING_INDEX=0
 FAILED_TESTS=0
 FAILED="FALSE"
 PARAMS=""
+      VGout=""
  
 
 ES_start() {
@@ -110,9 +111,11 @@ ES_start() {
     FAILED="FALSE"
     PARAMS="$1"
     echo "     $1"
+      VGout="${SST_TEST_OUTPUTS}/testESshmem_${TEST_INDEX}.VGout"
     testDataFileBase="testES_${TEST_INDEX}"
     L_TESTFILE+=(${testDataFileBase})
 #             For Valgrind, sut= will be installed after this line.
+   sut=$SST_INSTALL_BIN/../libexec/sstsim.x
     pushd ${SST_TEST_SUITES}/emberSweep_folder
 }   
 ####################
@@ -125,6 +128,7 @@ ES_fini() {
    touch tmp_file
    TL=`grep Simulation.is.complete tmp_file`
    RetVal=$?
+   checkValgrindOutput $VGout 1 
    TIME_FLAG=$SSTTESTTEMPFILES/TimeFlag_$$_${__timerChild} 
    if [ -e $TIME_FLAG ] ; then 
         echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
@@ -189,12 +193,12 @@ ES_fini() {
 
 #    Generate the bash input script
 
-    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
-        cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
-    else
-        sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
-        chmod +x EmberSweepGenerator.py
-    fi
+#    if [[ ${SST_MULTI_THREAD_COUNT:+isSet} != isSet ]] ; then
+#        cp  ${SST_TEST_INPUTS}/EmberSweepGenerator.py .
+#    else
+#        sed '/print..sst.*model/s/sst./sst -n '"${SST_MULTI_THREAD_COUNT} /" ${SST_TEST_INPUTS}/EmberSweepGenerator.py > EmberSweepGenerator.py
+#        chmod +x EmberSweepGenerator.py
+#    fi
     if [[ ${SST_MULTI_RANK_COUNT:+isSet} == isSet ]] && [ ${SST_MULTI_RANK_COUNT} -gt 1 ] ; then
         sed -i.x '/print..sst.*model/s/..sst/ "mpirun -np '"${SST_MULTI_RANK_COUNT} $NUMA_PARAM"' sst/' EmberSweepGenerator.py 
     fi
