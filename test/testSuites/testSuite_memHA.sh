@@ -363,18 +363,42 @@ test_memHA_CustomCmdGoblin_3 () {
 }
 
 test_memHA_BackendTimingDRAM_1 () {
+
+if [[ `uname -n` == sst-test* ]] ; then
+    ps -e | grep loop
+    ~jpvandy/loop-on-ps &
+fi
+
     memHA_Template BackendTimingDRAM_1 "M"
 }
 
 test_memHA_BackendTimingDRAM_2 () {
+
+if [[ `uname -n` == sst-test* ]] ; then
+    ps -e | grep loop
+    ~jpvandy/loop-on-ps &
+fi
+
     memHA_Template BackendTimingDRAM_2 "M"
 }
 
 test_memHA_BackendTimingDRAM_3 () {
+
+if [[ `uname -n` == sst-test* ]] ; then
+    ps -e | grep loop
+    ~jpvandy/loop-on-ps &
+fi
+
     memHA_Template BackendTimingDRAM_3 "M"
 }
 
 test_memHA_BackendTimingDRAM_4 () {
+
+if [[ `uname -n` == sst-test* ]] ; then
+    ps -e | grep loop
+    ~jpvandy/loop-on-ps &
+fi
+
     memHA_Template BackendTimingDRAM_4 "M"
 }
 
