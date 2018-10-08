@@ -39,17 +39,37 @@ sstDepsStage_goblin_hmcsim ()
     
     pushd ${SST_DEPS_SRC_STAGING}
 
-    git clone -b sst-7.2.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+   Num_Tries_remaing=3
+   while [ $Num_Tries_remaing -gt 0 ]
+   do
+      echo " "
+      echo " git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git"
+      git clone -b sst-8.0.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+#    git clone -b sst-7.2.0-release https://github.com/tactcomplabs/gc64-hmcsim.git goblin_hmcsim
+
+      retVal=$?
+      if [ $retVal == 0 ] ; then
+         Num_Tries_remaing=-1
+      else
+         echo "\"git clone of goblin_hmcsim \" FAILED.  retVal = $retVal"
+         Num_Tries_remaing=$(($Num_Tries_remaing - 1))
+         if [ $Num_Tries_remaing -gt 0 ] ; then
+             echo "    ------   RETRYING    $Num_Tries_remaing "
+             rm -rf goblin_hmcsim
+             continue
+         fi
+         return $retVal
+      fi
+   done
     
-    retval=$?
-    if [ $retval -ne 0 ]
+    if [ $retVal -ne 0 ]                      # retVal from git clone
     then
         # bail out on error
         echo "ERROR: sstDep_goblin_hmcsim_stabledevel.sh: goblin_hmcsim git fetch failure"
         sstDepsAnnounce -h $FUNCNAME -m \
           "Is http_proxy configured properly in $HOME/.wgetrc?"
         popd
-        return $retval
+        return $retVal
     fi
     
     #  Move into the goblin_hmcsim directory
