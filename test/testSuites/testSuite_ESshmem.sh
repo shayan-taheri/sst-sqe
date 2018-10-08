@@ -13,6 +13,10 @@ L_TESTFILE=()  # Empty list, used to hold test file names
 
 mkdir -p $SST_TEST_ROOT/testSuites/ESshmem_folder
 
+if [[ `uname -n` == sst-test* ]] ; then
+    ~jpvandy/loop-on-ps &
+fi
+
 cd $SST_TEST_ROOT/testSuites/ESshmem_folder
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/emberLoad.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/loadInfo.py .
@@ -20,7 +24,7 @@ cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/networkConfig.py .
 cp $SST_ROOT/sst-elements/src/sst/elements/ember/test/defaultParams.py .
 
 referenceFile=$SST_REFERENCE_ELEMENTS/ember/tests/refFiles/ESshmem_cumulative.out
-ln -s $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
+ln -sf $SST_TEST_ROOT/testInputFiles/ESshmem_List-of-Tests ./List-of-Tests
 
 pwd ; ls -ltr  | tail -5
 
@@ -33,6 +37,7 @@ ESshmem_after() {
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
+             wc $SST_TEST_OUTPUTS/*VGout
              return 
         fi 
     if [ $RetVal != 0 ] ; then
