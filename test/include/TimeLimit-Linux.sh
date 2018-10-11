@@ -39,6 +39,9 @@ echo "$LINENO findChild -  - ------------------   Debug -------------"
                echo "$LINENO findChile -  - There is no pid for SST! !"
                
                echo "$LINENO findChild -  - at line $LINENO,  kill Valgrind $VG_PID"
+               kill -15 $VG_PID
+               sleep 2
+               ps -p $VG_PID -e
                kill -9 $VG_PID
                echo "$LINENO findChild -  - kill issued"
                echo "$LINENO findChild -  - wc from \"ps -fe\" `ps -fe | wc` "
