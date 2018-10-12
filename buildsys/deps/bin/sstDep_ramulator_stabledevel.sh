@@ -31,6 +31,24 @@ export SST_BUILD_RAMULATOR_STABLEDEVEL=1
 #     Staged Ramulator code 
 # Caveats:
 #     None
+#-------------------------------------------------------------------------
+# Function: TimeoutEx
+# Description:
+#   Purpose:
+#       This function is a wrapper Around the TimeoutEx.sh which will execute 
+#       a command with a timeout 
+#   Input:
+#       $@: Variable number of parameters depending upon module command operation
+#   Output: Any output from the command being run.
+#   Return value: The return value of the command being run or !=0 to indicate 
+#   a timeout or error.
+TimeoutEx() {
+    # Call (via "source") the moduleex.sh script with the passed in parameters  
+    $SST_ROOT/../sqe/test/utilities/TimeoutEx.sh $@
+    # Get the return value from the moduleex.sh
+    return $retval  
+}
+
 #-------------------------------------------------------------------------------
 export SST_DEPS_SRC_STAGED_RAMULATOR=${SST_DEPS_SRC_STAGING}/ramulator
 sstDepsStage_ramulator ()
