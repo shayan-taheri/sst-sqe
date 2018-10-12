@@ -1548,9 +1548,7 @@ do
             esac
             ;;
         r) # Ramulator
-if [[ $SST_NO_RAM == 1 ]] ; then
-   ;;
-fi
+   if [[ $SST_NO_RAM != 1 ]] ; then
             echo "# found the -r (ramulator) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
@@ -1565,6 +1563,7 @@ fi
                     echo "# Unknown argument '$OPTARG', will not build Ramulator"
                     ;;
             esac
+   fi
             ;;
         m) # McPAT
             echo "# found the -m (Mcpat) option, with value $OPTARG"
