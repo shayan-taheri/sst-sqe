@@ -46,7 +46,7 @@ sstDepsStage_ramulator ()
       date
       echo ' '
       echo "git clone https://github.com/CMU-SAFARI/ramulator.git ramulator"
-      git clone https://github.com/CMU-SAFARI/ramulator.git ramulator
+      TimeoutEx -t 500 git clone https://github.com/CMU-SAFARI/ramulator.git ramulator
       retVal=$?
       echo ' '
       date
