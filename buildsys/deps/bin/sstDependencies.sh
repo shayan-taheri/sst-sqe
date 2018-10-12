@@ -1548,6 +1548,9 @@ do
             esac
             ;;
         r) # Ramulator
+if [[ $SST_NO_RAM == 1 ]] ; then
+   ;;
+fi
             echo "# found the -r (ramulator) option, with value $OPTARG"
             # process arg
             case "$OPTARG" in
