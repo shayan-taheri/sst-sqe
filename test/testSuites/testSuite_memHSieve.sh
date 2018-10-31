@@ -59,13 +59,6 @@ fi
 #     file and the reference file be exactly the same.
 #-------------------------------------------------------------------------------
 
-##  Subroutine for logging memHSieve runs.
-log_memHS() {
-    if [[ `uname -n` == sst-test* ]] ; then
-        __MUL="$SST_MULTI_THREAD_COUNT - $SST_MULTI_RANK_COUNT"
-        echo " `date` ${1} $__MUL $JOB_NAME $BUILD_NUMBER" >> ~jpvandy/memHS-follow
-    fi
-}
 
 echo " First call to countStreams follow: "
     countStreams    
@@ -126,15 +119,14 @@ test_memHSieve() {
              echo " Time Limit detected at `cat $TIME_FLAG` seconds" 
              fail " Time Limit detected at `cat $TIME_FLAG` seconds" 
              rm $TIME_FLAG 
-             log_memHS "Time Limit"
-    ls -ltr
-    if [[ `uname -n` == sst-test* ]] ; then
-         __dir=`date | sed 's/ /_/g'`
-         echo "Directory is $__dir"
-         mkdir ~jpvandy/memHS-dir/$__dir
-         cp *map.txt ~jpvandy/memHS-dir/$__dir
-         cp backtrace_*.gz ~jpvandy/memHS-dir/$__dir
-    fi
+#    ls -ltr
+#    if [[ `uname -n` == sst-test* ]] ; then
+#         __dir=`date | sed 's/ /_/g'`
+#         echo "Directory is $__dir"
+#         mkdir ~jpvandy/memHS-dir/$__dir
+#         cp *map.txt ~jpvandy/memHS-dir/$__dir
+#         cp backtrace_*.gz ~jpvandy/memHS-dir/$__dir
+#    fi
              return 
         fi 
         if [ $RetVal != 0 ]  
@@ -144,7 +136,6 @@ test_memHSieve() {
              ls -l ${sut}
              fail "WARNING: sst did not finish normally, RetVal=$RetVal"
              popd
-             log_memHS "Did not finish correctly"
              return
         fi
 #  Look at what we'e got
@@ -215,10 +206,8 @@ ls -ltr
 
         if [ $FAIL == 0 ] ; then
            echo "Sieve test PASSED"
-           log_memHS "Pass"
         else
            fail " Sieve test did NOT meet required conditions"
-           log_memHS "Bad Output"
         fi
 
             echo ' '
