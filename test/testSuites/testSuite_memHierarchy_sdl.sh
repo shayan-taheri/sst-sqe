@@ -348,17 +348,26 @@ memHierarchy_Template sdl9_2 500
 }
 
 test_memHierarchy_sdl4_2_ramulator() {          
-memHierarchy_Template sdl4-2-ramulator 500
+   if [[ $SST_NO_RAM == 1 ]] ; then
+      skip_this_test
+      return 
+      return 
+   fi
+   memHierarchy_Template sdl4-2-ramulator 500
 
 }
 
 test_memHierarchy_sdl5_1_ramulator() {          
-pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
-if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
-    memHierarchy_Template sdl5-1-ramulator 500
-else
-    memHierarchy_Template sdl5-1-ramulator_MC 500
-fi
+   if [[ $SST_NO_RAM == 1 ]] ; then
+      skip_this_test
+      return 
+   fi
+   pushd  $SST_REFERENCE_ELEMENTS/memHierarchy/tests
+   if [[ ${SST_MULTI_CORE:+isSet} != isSet ]] ; then
+        memHierarchy_Template sdl5-1-ramulator 500
+   else
+        memHierarchy_Template sdl5-1-ramulator_MC 500
+   fi
 popd
 
 }
