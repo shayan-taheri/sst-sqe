@@ -14,10 +14,10 @@
 # script. Plow through the build, exiting if something goes wrong.
 
 echo "************************ BAMBOO.SH STARTING ************************"
-echo $TERM
-export TERM=xterm
-echo $TERM
-top -n 2 -H -b
+# echo $TERM
+# export TERM=xterm
+# echo $TERM
+top -n 2 -H -b | grep Thread
 exit
 echo ' '
 pwd
