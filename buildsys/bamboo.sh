@@ -17,7 +17,7 @@ echo "************************ BAMBOO.SH STARTING ************************"
 # echo $TERM
 # export TERM=xterm
 # echo $TERM
-top -n 2 -H -b | grep Thread
+top -n 3 -H -b -d 20 | grep Thread
 exit
 echo ' '
 pwd
