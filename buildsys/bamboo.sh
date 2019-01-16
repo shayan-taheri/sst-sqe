@@ -15,6 +15,8 @@
 
 echo "************************ BAMBOO.SH STARTING ************************"
 echo $TERM
+export TERM=xterm
+echo $TERM
 top -n 2 -H 
 exit
 echo ' '
