@@ -14,6 +14,9 @@
 # script. Plow through the build, exiting if something goes wrong.
 
 echo "************************ BAMBOO.SH STARTING ************************"
+echo $TERM
+top -n 2 -H 
+exit
 echo ' '
 pwd
 df -h .
