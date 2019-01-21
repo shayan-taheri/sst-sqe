@@ -1929,6 +1929,7 @@ ls
 
          popd
          if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
+         then
              rm -rf $SST_ROOT/sst-elements
          else 
              mv $SST_ROOT/sst-elements $SST_ROOT/save-original
