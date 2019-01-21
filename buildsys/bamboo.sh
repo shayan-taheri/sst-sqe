@@ -1928,7 +1928,12 @@ ls
          echo "SST_REFERENCE_ELEMENTS = $SST_REFERENCE_ELEMENTS"
 
          popd
-         rm -rf $SST_ROOT/sst-elements
+         if [[ ${SST_RETAIN_BIN:+isSet} != isSet ]]
+             rm -rf $SST_ROOT/sst-elements
+         else 
+             mv $SST_ROOT/sst-elements $SST_ROOT/save-original
+         fi
+         
 ########### JVD   #############################################################
          echo "===============   MOVE IN THE EXTERNAL ELEMENT & JUNO =========="
          echo " PWD $LINENO=`pwd` "
