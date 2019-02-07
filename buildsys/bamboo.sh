@@ -1391,13 +1391,16 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
-       johnsmpi)
+       johnsmpi*)
            echo "OpenMPI (johnsmpi) selected"
 echo "##########################################################################"
 echo "###########################################     $LINENO  #################"
            ModuleEx unload mpi # unload any default to avoid conflict error
 echo "###########################################     $LINENO  #################"
-           _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk -F/ '{print $NF}'` 
+           if [ $2 == "johnsmpi" ] ; then
+               _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk -F/ '{print $NF}'` 
+           else
+               _TOP=/home/jpvandy/johnsmpiX/`echo $2 |sed -n s/johnsmpi//'
 echo "###########################################     $LINENO  #################"
 echo $_TOP_
 echo "###########################################     $LINENO  #################"
