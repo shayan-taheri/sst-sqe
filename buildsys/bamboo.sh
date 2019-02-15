@@ -1391,20 +1391,39 @@ linuxSetBoostMPI() {
            ModuleEx unload mpi # unload any default to avoid conflict error
            ModuleEx load mpi/${desiredMPI}
            ;;
-       johnsmpi)
-           echo "OpenMPI (johnsmpi) selected"
-echo "##########################################################################"
-echo "###########################################     $LINENO  #################"
+        johnsmpi*)
+           echo "OpenMPI ($2) selected"
            ModuleEx unload mpi # unload any default to avoid conflict error
-echo "###########################################     $LINENO  #################"
-           _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d | awk -F/ '{print $NF}'` 
-echo "###########################################     $LINENO  #################"
-echo $_TOP_
-echo "###########################################     $LINENO  #################"
-           export MPIHOME=/home/jpvandy/johnsmpi/$_TOP_
-           export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
-           export PATH=$MPIHOME/bin:$PATH
-echo "###########################################     $LINENO  #################"
+           if [ $2 == "johnsmpi" ] ; then
+              echo   "Match  (John's primary}"
+              _TOP_=`ls -ld /home/jpvandy/johnsmpi/* | grep ^d|awk -F/ '{print $NF}'` 
+              echo $_TOP_
+              export MPIHOME=/home/jpvandy/johnsmpi/$_TOP_
+           else
+              echo  "John's alternate MPI"
+              _XMPI=`echo $2 |sed s/johnsmpi//`
+              echo "Seeking $_XMPI"
+              echo "Available `ls /home/jpvandy/johnsmpiX`"
+
+              export MPIHOME=/home/jpvandy/johnsmpiX/${_XMPI}
+              echo "    \$MPIHOME"
+              ls -d $MPIHOME  
+              if [ $? != 0 ] ; then
+                  echo "   Did not find mpi " ; echo ' '
+echo "#####YY#######  ddd  ########################     $LINENO  #################"
+                  exit
+              fi
+           fi
+              export LD_LIBRARY_PATH=$MPIHOME/lib:$LD_LIBRARY_PATH
+              export PATH=$MPIHOME/bin:$PATH
+
+           ;;    
+
+       none)
+           echo "MPI requested as \"none\".    No MPI loaded"
+   esac
+
+echo "###########################################     $LINENO  ###########
 ls $MPIHOME
 
            ;;
