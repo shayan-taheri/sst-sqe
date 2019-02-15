@@ -1421,15 +1421,6 @@ echo "#####YY#######  ddd  ########################     $LINENO  ###############
 
        none)
            echo "MPI requested as \"none\".    No MPI loaded"
-   esac
-
-echo "###########################################     $LINENO  ###########"
-ls $MPIHOME
-
-           ;;
-
-       none)
-           echo "MPI requested as \"none\".    No MPI loaded"
            ModuleEx unload mpi # unload any default 
            ;;
        *)
