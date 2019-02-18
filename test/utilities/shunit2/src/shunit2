@@ -47,6 +47,11 @@ SHUNIT_MAX_TEST_COUNT=${SHUNIT_MAX_TEST_COUNT:-0}
 #_shunit_error() { echo "shunit2:ERROR $@" >&2; }
 #_shunit_fatal() { echo "shunit2:FATAL $@" >&2; exit ${SHUNIT_ERROR}; }
 
+
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then    ######   macOS #####
+     echo " This is  MAC, but at square one.   line $LINENO"
+fi 
+
 #
 # some convenient log functions
 #
