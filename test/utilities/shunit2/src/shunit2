@@ -888,6 +888,10 @@ _shunit_cleanup()
     
     ### Since the Test aborted, we may still have the timelimitenforcer.sh 
     ### running, so we try to shut it down.
+
+if [ "$SST_TEST_HOST_OS_KERNEL" == "Darwin" ] ; then    ######   macOS #####
+     echo " This is  MAC, but the test is believed to have aborted"
+fi
     _kill_timeLimitEnforcer
     
     ### MODIFIED BY ALevine - Done with code additions
