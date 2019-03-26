@@ -64,7 +64,9 @@ if [ ! -d ../../distTestDir ] ; then
    do
       echo " "
       echo "     TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core "
-      TimeoutEx -t 90 git clone ${_DEPTH_} -b $SST_COREBRANCH $SST_COREREPO sst-core
+      TimeoutEx -t 90 git clone  -b $SST_COREBRANCH $SST_COREREPO sst-core
+      git reset --hard f82b7040528bd79bae29e3d278fee5fbb81777de
+
       retVal=$?
       if [ $retVal == 0 ] ; then
          Num_Tries_remaing=-1
@@ -80,7 +82,7 @@ if [ ! -d ../../distTestDir ] ; then
       fi
    done
    echo " "
-   echo " The sst-core Repo has been cloned."
+   echo " The sst-ore Repo has been cloned."
    ls -l
    pushd sst-core
    
