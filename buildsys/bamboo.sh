@@ -175,6 +175,8 @@ if [ ! -d ../../distTestDir ] ; then
    ls -l
    pushd sst-macro
 
+echo ' ' ; echo " Macro down loaded" ; exit
+
    # Test for override of the branch to some other SHA1 
    if [[ ${SST_MACRO_RESET:+isSet} == isSet ]] ; then
        echo "     Desired sst-macro SHA1 is ${SST_MACRO_RESET}"
