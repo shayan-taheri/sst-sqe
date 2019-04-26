@@ -37,9 +37,6 @@ rm -rf ${SST_TEST_SUITES}/Prospero_folder
 mkdir ${SST_TEST_SUITES}/Prospero_folder
 cd ${SST_TEST_SUITES}/Prospero_folder
 if [[ ${SST_BUILD_PROSPERO_TRACE_FILE:+isSet} == isSet ]] ; then
-    if [[ $SST_TEST_HOST_OS_DISTRIB_VERSION == *10.10* ]] ; then
-      preFail "SKIP: Prospero Pin does not work on Yosemite - July 2016"  "skip"
-    fi  
    # ==================  Create program "array"
 
    # ----------------- compile the file array     
@@ -98,7 +95,7 @@ echo " ---------------  Three files are expected: "
 cksum *.trace
 if [ $? != 0 ] ; then
    echo "No trace files found"
-   preFail "No trace files found"
+   preFail "No ${PIN_TAR} trace files found"
 fi
 echo ' '
 
