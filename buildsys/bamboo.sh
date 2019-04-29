@@ -617,12 +617,6 @@ echo " #####################################################"
             ${SST_TEST_SUITES}/testSuite_Ariel_extra.sh
             popd
         fi
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
         ${SST_TEST_SUITES}/testSuite_SiriusZodiacTrace.sh
         ${SST_TEST_SUITES}/testSuite_embernightly.sh
         ${SST_TEST_SUITES}/testSuite_BadPort.sh
@@ -713,14 +707,6 @@ echo " #####################################################"
     ${SST_TEST_SUITES}/testSuite_simpleRNGComponent.sh
     ${SST_TEST_SUITES}/testSuite_simpleStatisticsComponent.sh
       
-    if [[ ${INTEL_PIN_DIRECTORY:+isSet} == isSet ]] ; then
-        export SST_BUILD_PROSPERO_TRACE_FILE=1
-        pushd ${SST_TEST_SUITES}
-          ln -s ${SST_TEST_SUITES}/testSuite_prospero.sh testSuite_prospero_pin.sh
-          ${SST_TEST_SUITES}/testSuite_prospero_pin.sh
-          unset SST_BUILD_PROSPERO_TRACE_FILE
-        popd
-    fi
     ${SST_TEST_SUITES}/testSuite_prospero.sh
 #
     ${SST_TEST_SUITES}/testSuite_check_maxrss.sh
